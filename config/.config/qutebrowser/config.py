@@ -1,0 +1,1 @@
+../../stow/.config/qutebrowser/config.py
