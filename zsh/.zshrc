@@ -24,6 +24,7 @@ export EDITOR="/usr/bin/vim"
 export BROWSER="/usr/bin/qutebrowser"
 export FZF_DEFAULT_COMMANDS='find .'
 export STOW_DIR='/home/fish/dotfiles'
+export ZPLUG_HOME='/home/fish/.zplug'
 ### Aliases #############################################
 alias ls="exa -1 --colour=always --total-size --icons -a -r -G"
 alias vim="nvim -u ~/.vimrc"
@@ -38,7 +39,7 @@ alias bat="bat --color=always"
 alias pingle="ping google.com"
 # zplug
 #####################################################################
-source /home/fish/.zplug/init.zsh
+source $ZPLUG_HOME/init.zsh
 zplug "zakariaGatter/MarkEdit"
 # zplug 'MefitHp/alias-maker'
 # zplug "Vifon/deer"
