@@ -1,5 +1,5 @@
 
-. ~/i3lock.zsh
+# . ~/i3lock.zsh
 
 #enhance lemonbar, allegedly
 if [ -n "$GTK_MODULES" ]; then
@@ -25,6 +25,7 @@ export BROWSER="/usr/bin/qutebrowser"
 export FZF_DEFAULT_COMMANDS='find .'
 export STOW_DIR='/home/fish/dotfiles'
 export ZPLUG_HOME='/home/fish/.zplug'
+export GEMINI_API_KEY="AIzaSyBDNZsYEyoKISNTqdHwx5wE1fwflgNCBag"
 ### Aliases #############################################
 alias ls="exa -1 --colour=always --total-size --icons -a -r -G"
 alias vim="nvim -u ~/.vimrc"
@@ -59,11 +60,11 @@ zplug "denisidoro/navi"
 zplug "joshskidmore/zsh-fzf-history-search"
 
 # ---------deer------------
-source ~/.zsh/deer/deer
-zle -N deer
-bindkey '\ek' deer
+# source ~/.zsh/deer/deer
+# zle -N deer
+# bindkey '\ek' deer
 
-zstyle :deer: show_hidden yes
+# zstyle :deer: show_hidden yes
 
 # -------------------------
 # Install plugins if there are plugins that have not been installed
@@ -173,3 +174,4 @@ if [ -n "$GTK_MODULES" ]; then
 # Load zsh-syntax-highlighting; should be last.
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 
+eval "$(gh copilot alias -- zsh)"

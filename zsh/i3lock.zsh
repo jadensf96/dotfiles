@@ -119,7 +119,7 @@ _i3lock() {
 
 
   )
-  _arguments $args[@] && ret=0
+   $args[@] && ret=0
 
   case "$state" in
     hex)
