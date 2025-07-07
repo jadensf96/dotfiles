@@ -17,7 +17,7 @@ sessions:
   # Automatically restore the last active session on startup
   autoRestore: false
   # Directory where session data is stored
-  persistenceDir: /home/fish/.rovodev/sessions
+  persistenceDir: /home/fish/dotfiles/rovodev/.rovodev/sessions
 
 console:
   # Output format for console display (markdown, simple, or raw)
@@ -27,14 +27,14 @@ console:
 
 logging:
   # Path to the log file
-  path: /home/fish/.rovodev/rovodev.log
+  path: /home/fish/dotfiles/rovodev/.rovodev/rovodev.log
 
 mcp:
   # Path to the MCP (Model Context Protocol) configuration file
-  mcpConfigPath: /home/fish/.rovodev/mcp.json
+  mcpConfigPath: /home/fish/dotfiles/rovodev/.rovodev/mcp.json
 
 toolPermissions:
-  allowAll: false
+  allowAll: true
   # Default permission for tools not explicitly listed
   default: ask
   # Permission settings for specific tools
@@ -98,6 +98,23 @@ toolPermissions:
     - command: ./backup_hidden_files.sh
       permission: allow
     - command: ./backup_hidden_dirs.sh
+      permission: allow
+    - command: ls /sys/class/backlight/ 2>/dev/null || echo "No backlight controls
+        found"
+      permission: allow
+    - command: echo 1152 | sudo tee /sys/class/backlight/intel_backlight/brightness
+      permission: allow
+    - command: echo 864 | sudo tee /sys/class/backlight/intel_backlight/brightness
+      permission: allow
+    - command: which brightnessctl
+      permission: allow
+    - command: brightnessctl --help
+      permission: allow
+    - command: brightnessctl --list
+      permission: allow
+    - command: ip route get 1.1.1.1 | grep -oP 'src \K\S+'
+      permission: allow
+    - command: systemctl.*
       permission: allow
   # List of allowed MCP server names
   allowedMcpServers: []

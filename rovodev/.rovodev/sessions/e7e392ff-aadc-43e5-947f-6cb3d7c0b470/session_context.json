@@ -1,0 +1,391 @@
+{
+    "agent_factory": {},
+    "artifacts": {},
+    "id": "fa318e02-e404-40b1-ab92-b2abb7ce5648",
+    "initial_prompt": "i think you hung on your last command",
+    "mcp_servers": [
+        {
+            "args": [
+                "nautilus",
+                "run",
+                "--tool-set",
+                "basic_with_bash",
+                "--workspace-args-json",
+                "{\"workspace_view_max_files\": 1000}"
+            ],
+            "command": "/home/fish/.local/share/acli/plugin/rovodev/atlassian_cli_rovodev",
+            "cwd": "/home/fish",
+            "env": null,
+            "log_file": null,
+            "log_level": null,
+            "timeout": 30,
+            "tool_prefix": null
+        },
+        {
+            "headers": {
+                "Authorization": "Basic amFkZW4uc2Y5NkBnbWFpbC5jb206QVRBVFQzeEZmR0YwN3dHWVB2MWwyYWlSZkRjTnVKcFlVcTR1RV9CeFk3YXhzRXViVl9Ddlp1anhCcjdaTVlmMUhka1V3Z1R6RlVLbmE0MXJUcUhIcGt0WnNHRTJqU3hNbDl1bTBkdjVkTGpDY09OSHJWQ0FhT1ZlV0Q0QmRUaGhFWEhBQXNiNXVKOW5SYVk1bmxYZGtCSUtxRmdlWGFKVUMwZE9lM2JSUmc5UTBDa1RwNjRBSTVvPUFFQTNBODND"
+            },
+            "log_level": null,
+            "sse_read_timeout": 3600,
+            "timeout": 20,
+            "tool_prefix": null,
+            "url": "https://mcp.atlassian.com/v1/native/mcp"
+        }
+    ],
+    "message_history": [
+        {
+            "instructions": "Location-specific best practices, tips, and patterns may be found throughout the current workspace in .agent.md files. Before making any changes in a subdirectory, please read the contents of its .agent.md if present.",
+            "kind": "request",
+            "parts": [
+                {
+                    "content": "You are \"Rovo Dev\" - a friendly and helpful AI agent that can help software developers with their tasks. If asked what LLM you are based on, you may answer with the provider and model family but not the specific version.\n\nYou are an expert software development assistant tasked with performing operations against a workspace to resolve a problem statement. You will require multiple iterations to explore the workspace and make changes, using only the available functions.\n\nHere is the structure of the current workspace:\n<workspace>\nadbfs-rootless/: (COLLAPSED)\n\nAdrians_shit/: (COLLAPSED)\n\nanbox/: (COLLAPSED)\n\n.android/: (COLLAPSED)\n\n.cache/: (COLLAPSED)\n\nCalibre Library/: (COLLAPSED)\n\n.codex/: (COLLAPSED)\n\n.config/: (COLLAPSED)\n\ncontainers/: (COLLAPSED)\n\ndotfiles/: (COLLAPSED)\n\nDownloads/: (COLLAPSED)\n\n.gemini/: (COLLAPSED)\n\n.gimp-2.8/: (COLLAPSED)\n\n.gnupg/: (COLLAPSED)\n\n.i3/: (COLLAPSED)\n\n.jrnl/: (COLLAPSED)\n\nkindle-downgrade/: (COLLAPSED)\n\n.megaCmd/: (COLLAPSED)\n\n.moc/: (COLLAPSED)\n\nMTK/: (COLLAPSED)\n\n.nb/: (COLLAPSED)\n\n.npm/: (COLLAPSED)\n\n.nx/: (COLLAPSED)\n\n.qt/: (COLLAPSED)\n\n.snap/: (COLLAPSED)\n\n.spotdl/: (COLLAPSED)\n\n.ssh/: (COLLAPSED)\n\n.steam/: (COLLAPSED)\n\ntues_stuff/: (COLLAPSED)\n\nvimwiki/: (COLLAPSED)\n\n.w3m/: (COLLAPSED)\n\nWallpapers/: (COLLAPSED)\n\n.wine/: (COLLAPSED)\n</workspace>\n\nYou will be given access to the files in the workspace and a shell (bash or powershell, depending on the platform) to execute commands.\n\nGuidelines:\n- Work exclusively within the provided workspace. Do not attempt to access or modify files outside the workspace. Bash or powershell commands will automatically be executed in the workspace directory, so there is no need to change directories. DO NOT run commands like `cd /workspace && ...` - you are already in the correct directory.\n- After receiving tool results, carefully reflect on their quality and determine optimal next steps before proceeding. Use your thinking to plan and iterate based on this new information, and then take the best next action.\n- Speed up your solution by testing only the relevant parts of the code base. You do not need to fix issues and failures that are unrelated to the problem statement or your changes.\n- If you create any temporary new files, scripts, or helper files for iteration, clean up these files by removing them at the end of the task. All temporary files created for testing purposes should be named with a prefix of \"tmp_rovodev_\"\n- Please write a high quality, general purpose solution. Implement a solution that works correctly for all valid inputs, not just the test cases. Do not hard-code values or create solutions that only work for specific test inputs. Instead, implement the actual logic that solves the problem generally.\n- Focus on understanding the problem requirements and implementing the correct algorithm. Tests are there to verify correctness, not to define the solution. Provide a principled implementation that follows best practices and software design principles.\n- For maximum efficiency, whenever you need to perform multiple independent operations, invoke all relevant tools simultaneously rather than sequentially; in almost all cases, your first step should include an analysis of the problem statement, a single call to open_files with a list of potentially relevant files, and optional calls to grep to search for specific patterns in the codebase.\n- Do not use bash/powershell commands to perform actions that can be completed with the other provided functions.\n- Resolve the provided task as efficiently as possible. You will be provided with the number of iterations consumed at each step and you must complete the task before the iterations run out - you will be notified when approaching the limit. Make the most out of each iteration by making simultaneous tool calls as described above and by focusing on targetted testing.\n\nExplanation of available tools:\n- open_files: Opens a set of files in the workspace. Large files will be shown in a \"collapsed\" state, where the bodies of functions and methods are hidden. Smaller files will be shown in full.\n- expand_code_chunks: Shown the content of a single file with specified symbols or line ranges expanded. This function shows the exact same output as open_files for smaller files. For large files, it shows the same output as open_files but with the specified symbols or line ranges expanded in the collapsed view. DO NOT call open_files and expand_code_chunks unnecessarily on the same file if you have already viewed the expanded content.\n- grep_file_content: Searches for a pattern in the content of files in the workspace.\n- find_and_replace_code, create_file, delete_file: These functions enable you to modify the codebase.\n- bash/powershell: Executes a shell command in the workspace directory. Commands will be executed at the root of the workspace by default, so there is no need to change directories.\n\nImportant:\n- Aim to solve tasks in a \"token-efficient\" manner. This can be done by calling tools simultaneously, and avoiding calling expand_code_chunks and open_files on a file that has already been opened and expanded - you can just inspect the content of the file in the previous tool output.\n- You will be provided with the number of iterations you have consumed at each step. As a guide, here are the number of iterations you should expect to consume for different types of tasks:\n    - Simple tasks (e.g. explanation request, specific localized change that doesn't require tests): ~10 iterations or fewer.\n    - Medium tasks (e.g. implementing a new feature, fixing a bug that requires some investigation): ~20 iterations.\n    - Complex tasks (e.g. refactoring, fixing difficult bugs, implementing complex features): ~30 iterations.\n    - Minor follow-up tasks (e.g., adjustments to your initial solution): ~10 iterations.\n\nYou are currently in interactive mode. You can ask questions and additional inputs from the user when needed.\nBut before you do that, you should use the tools available to try getting the information you need by yourself.\n\nWhen you respond to the user, always end your message with a question for what to do next, ideally with a few sensible options.",
+                    "dynamic_ref": null,
+                    "part_kind": "system-prompt",
+                    "timestamp": "2025-07-05T23:28:30.439005+00:00"
+                },
+                {
+                    "content": "are you better than gemini-cli?",
+                    "part_kind": "user-prompt",
+                    "timestamp": "2025-07-05T23:28:30.439013+00:00"
+                },
+                {
+                    "content": "You have used 0 iterations.",
+                    "part_kind": "user-prompt",
+                    "timestamp": "2025-07-05T23:28:30.439131+00:00"
+                }
+            ]
+        },
+        {
+            "kind": "response",
+            "model_name": null,
+            "parts": [
+                {
+                    "content": "I appreciate the question! Rather than making direct comparisons, I'd say we each have different strengths and capabilities. Let me show you what I can do by exploring your workspace and understanding what tools and projects you're working with.\n\nLet me take a look at your workspace structure to better understand your development environment:",
+                    "part_kind": "text"
+                },
+                {
+                    "args": "{\"folder_path\": \".\"}",
+                    "part_kind": "tool-call",
+                    "tool_call_id": "toolu_vrtx_01QJFutRNiJSH6GGZskQmtoi",
+                    "tool_name": "expand_folder"
+                }
+            ],
+            "timestamp": "2025-07-05T23:28:33.683548+00:00",
+            "usage": {
+                "details": {
+                    "cache_creation_input_tokens": 10961,
+                    "cache_read_input_tokens": 0,
+                    "input_tokens": 4,
+                    "output_tokens": 121
+                },
+                "request_tokens": 10965,
+                "requests": 0,
+                "response_tokens": 121,
+                "total_tokens": 11086
+            },
+            "vendor_details": null,
+            "vendor_id": null
+        },
+        {
+            "instructions": "Location-specific best practices, tips, and patterns may be found throughout the current workspace in .agent.md files. Before making any changes in a subdirectory, please read the contents of its .agent.md if present.",
+            "kind": "request",
+            "parts": [
+                {
+                    "content": "adbfs-rootless/:\n\nAdrians_shit/:\n\nanbox/:\n\n.android/:\n\n.cache/:\n\nCalibre Library/:\n\n.codex/:\n\n.config/:\n\ncontainers/:\n\ndotfiles/:\n\nDownloads/:\n\n.gemini/:\n\n.gimp-2.8/:\n\n.gnupg/:\n\n.i3/:\n\n.jrnl/:\n\nkindle-downgrade/:\n\n.megaCmd/:\n\n.moc/:\n\nMTK/:\n\n.nb/:\n\n.npm/:\n\n.nx/:\n\n.qt/:\n\n.snap/:\n\n.spotdl/:\n\n.ssh/:\n\n.steam/:\n\ntues_stuff/:\n\nvimwiki/:\n\n.w3m/:\n\nWallpapers/:\n\n.wine/:",
+                    "part_kind": "tool-return",
+                    "timestamp": "2025-07-05T23:28:36.273395+00:00",
+                    "tool_call_id": "toolu_vrtx_01QJFutRNiJSH6GGZskQmtoi",
+                    "tool_name": "expand_folder"
+                },
+                {
+                    "content": "You have used 1 iterations.",
+                    "part_kind": "user-prompt",
+                    "timestamp": "2025-07-05T23:28:36.420962+00:00"
+                }
+            ]
+        },
+        {
+            "kind": "response",
+            "model_name": null,
+            "parts": [
+                {
+                    "content": "I can see you have a diverse development environment with various projects and tools! I notice you have a `.gemini/` directory, which suggests you might be familiar with Gemini-related tools.\n\nMy strengths include:\n- **Multi-tool integration**: I can work with files, execute bash commands, search codebases, and integrate with Atlassian tools (Jira, Confluence)\n- **Code analysis and modification**: I can read, understand, and modify code across different languages and frameworks\n- **Workspace exploration**: I can navigate and understand complex project structures\n- **Interactive problem-solving**: I can ask clarifying questions and work iteratively on complex tasks\n\nLet me explore a bit more to see what kind of development work you're doing:",
+                    "part_kind": "text"
+                },
+                {
+                    "args": "{\"folder_path\": \"dotfiles\"}",
+                    "part_kind": "tool-call",
+                    "tool_call_id": "toolu_vrtx_01E6KjXsTaB12YsVtVroWEXz",
+                    "tool_name": "expand_folder"
+                },
+                {
+                    "args": "{\"folder_path\": \".gemini\"}",
+                    "part_kind": "tool-call",
+                    "tool_call_id": "toolu_vrtx_01LkQnPDVjjB3NqsCvHcTrzR",
+                    "tool_name": "expand_folder"
+                },
+                {
+                    "args": "{\"command\": \"find . -name \\\"*.py\\\" -o -name \\\"*.js\\\" -o -name \\\"*.ts\\\" -o -name \\\"*.go\\\" -o -name \\\"*.rs\\\" | head -10\"}",
+                    "part_kind": "tool-call",
+                    "tool_call_id": "toolu_vrtx_01Rts4cTHhfkNdAYkrY6Z8qj",
+                    "tool_name": "bash"
+                }
+            ],
+            "timestamp": "2025-07-05T23:28:39.405305+00:00",
+            "usage": {
+                "details": {
+                    "cache_creation_input_tokens": 309,
+                    "cache_read_input_tokens": 10961,
+                    "input_tokens": 4,
+                    "output_tokens": 337
+                },
+                "request_tokens": 11274,
+                "requests": 0,
+                "response_tokens": 337,
+                "total_tokens": 11611
+            },
+            "vendor_details": null,
+            "vendor_id": null
+        },
+        {
+            "instructions": "Location-specific best practices, tips, and patterns may be found throughout the current workspace in .agent.md files. Before making any changes in a subdirectory, please read the contents of its .agent.md if present.",
+            "kind": "request",
+            "parts": [
+                {
+                    "content": "dotfiles/:\nREADME.md\n\ndotfiles//config/:\n\ndotfiles//config//.config/:\npicom.conf\n\ndotfiles//config//.config//btop/:\nbtop.conf\nbtop.log\n\ndotfiles//config//.config//i3/:\nconfig\nconfig_\ni3status.conf_\n\ndotfiles//config//.config//kitty/:\nkitty.conf\n\ndotfiles//config//.config//ranger/:\ncommands.py\ndevicons.py\nrc.conf\nrifle.conf\nscope.sh\n\ndotfiles//config//.config//ranger//plugins/:\n__init__.py\ndevicons_linemode.py\n\ndotfiles//etc/:\n\ndotfiles//etc//pam.d/:\nsystem-auth\n\ndotfiles//home/:\n\ndotfiles//home//fish/:\n\ndotfiles//home//fish//.zplug/:\nzcompdump\n\ndotfiles//home//fish//.zplug//cache/:\ncommand.zsh\ndefer_1_plugin.zsh\ndefer_2_plugin.zsh\ndefer_3_plugin.zsh\nfpath.zsh\ninterface\nlazy_plugin.zsh\nplugin.zsh\ntheme.zsh\n\ndotfiles//home//fish//.zplug//log/:\ntrace.log\n\ndotfiles//rovodev/:\n\ndotfiles//rovodev//.rovodev/:\nconfig.yml\nprompt_history\nrovodev.log\n\ndotfiles//rovodev//.rovodev//sessions/:\n\ndotfiles//rovodev//.rovodev//sessions//825c5f2d-ac21-4269-9ab6-9d4df08c8219/:\nmetadata.json\nsession_context.json\n\ndotfiles//rovodev//.rovodev//sessions//c4856c9d-15fd-4052-8226-302d0dcae45e/:\nmetadata.json\nsession_context.json\n\ndotfiles//rovodev//.rovodev//sessions//ef97f2c9-888e-495c-b7f8-908f8fefd3df/:\nmetadata.json\nsession_context.json\n\ndotfiles//tmux/:\n.tmux.conf\n\ndotfiles//tmux//.tmux/:\n\ndotfiles//tmux//.tmux//plugins/:\n\ndotfiles//tmux//.tmux//plugins//tmux-continuum/:\nCHANGELOG.md\ncontinuum.tmux\nCONTRIBUTING.md\n.gitattributes\nLICENSE.md\nREADME.md\n\ndotfiles//tmux//.tmux//plugins//tmux-continuum//docs/:\n\ndotfiles//tmux//.tmux//plugins//tmux-continuum//scripts/:\n\ndotfiles//tmux//.tmux//plugins//tmux-menus/:\nCHANGELOG.md\n.gitignore\nLICENSE\n.markdownlint.json\nmenus.tmux\n.olint.conf\npyproject.toml\nREADME.md\n.shellcheckrc\n\ndotfiles//tmux//.tmux//plugins//tmux-menus//docs/:\n\ndotfiles//tmux//.tmux//plugins//tmux-menus//items/:\n\ndotfiles//tmux//.tmux//plugins//tmux-menus//scripts/:\n\ndotfiles//tmux//.tmux//plugins//tmux-menus//templates/:\n\ndotfiles//tmux//.tmux//plugins//tmux-menus//tools/:\n\ndotfiles//tmux//.tmux//plugins//tmux-open/:\nCHANGELOG.md\n.gitattributes\nLICENSE.md\nopen.tmux\nREADME.md\n\ndotfiles//tmux//.tmux//plugins//tmux-open//scripts/:\n\ndotfiles//tmux//.tmux//plugins//tmux-open//video/:\n\ndotfiles//tmux//.tmux//plugins//tmux-power-zoom/:\n.bashateconfig\n.gitignore\nLICENSE\n.markdownlint.yaml\n.olint.conf\npower-zoom.tmux\npyproject.toml\nREADME.md\n\ndotfiles//tmux//.tmux//plugins//tmux-power-zoom//scripts/:\n\ndotfiles//tmux//.tmux//plugins//tmux-powerline/:\nCHANGELOG.md\ncolor_palette.sh\nCONTRIBUTING.md\n.editorconfig\ngenerate_config.sh\n.gitignore\nLICENSE\nmain.tmux\nmute_powerline.sh\nOSSMETADATA\npowerline.sh\nREADME.md\n.semver.yaml\n\ndotfiles//tmux//.tmux//plugins//tmux-powerline//config/:\n\ndotfiles//tmux//.tmux//plugins//tmux-powerline//.devcontainer/:\n\ndotfiles//tmux//.tmux//plugins//tmux-powerline//img/:\n\ndotfiles//tmux//.tmux//plugins//tmux-powerline//lib/:\n\ndotfiles//tmux//.tmux//plugins//tmux-powerline//scripts/:\n\ndotfiles//tmux//.tmux//plugins//tmux-powerline//segments/:\n\ndotfiles//tmux//.tmux//plugins//tmux-powerline//themes/:\n\ndotfiles//tmux//.tmux//plugins//tmux-resurrect/:\nCHANGELOG.md\nCONTRIBUTING.md\n.gitattributes\n.gitignore\n.gitmodules\nLICENSE.md\nREADME.md\nresurrect.tmux\n.travis.yml\n\ndotfiles//tmux//.tmux//plugins//tmux-resurrect//docs/:\n\ndotfiles//tmux//.tmux//plugins//tmux-resurrect//save_command_strategies/:\n\ndotfiles//tmux//.tmux//plugins//tmux-resurrect//scripts/:\n\ndotfiles//tmux//.tmux//plugins//tmux-resurrect//strategies/:\n\ndotfiles//tmux//.tmux//plugins//tmux-resurrect//tests/:\n\ndotfiles//tmux//.tmux//plugins//tmux-resurrect//video/:\n\ndotfiles//tmux//.tmux//plugins//tmux-sensible/:\nCHANGELOG.md\n.gitattributes\nLICENSE.md\nREADME.md\nsensible.tmux\n\ndotfiles//tmux//.tmux//plugins//tmux-sidebar/:\nCHANGELOG.md\n.gitattributes\nLICENSE.md\nREADME.md\nscreenshot.gif\nsidebar.tmux\n\ndotfiles//tmux//.tmux//plugins//tmux-sidebar//docs/:\n\ndotfiles//tmux//.tmux//plugins//tmux-sidebar//scripts/:\n\ndotfiles//tmux//.tmux//plugins//tmux-yank/:\n_config.yml\nCHANGELOG.md\ncitest\n.editorconfig\n.gitattributes\n.gitignore\nLICENSE.md\nREADME.md\n.travis.yml\nvagrant_provisioning.sh\nVagrantfile\nyank.tmux\n\ndotfiles//tmux//.tmux//plugins//tmux-yank//scripts/:\n\ndotfiles//tmux//.tmux//plugins//tmux-yank//video/:\n\ndotfiles//tmux//.tmux//plugins//tpm/:\nCHANGELOG.md\n.gitattributes\n.gitignore\n.gitmodules\nHOW_TO_PLUGIN.md\nLICENSE.md\nREADME.md\ntpm\n.travis.yml\n\ndotfiles//tmux//.tmux//plugins//tpm//bin/:\n\ndotfiles//tmux//.tmux//plugins//tpm//bindings/:\n\ndotfiles//tmux//.tmux//plugins//tpm//docs/:\n\ndotfiles//tmux//.tmux//plugins//tpm//scripts/:\n\ndotfiles//tmux//.tmux//plugins//tpm//tests/:\n\ndotfiles//vim/:\n.viminfo\n.vimrc\n\ndotfiles//vim//.vim/:\n\ndotfiles//vim//.vim//autoload/:\nplug.vim\n\ndotfiles//vim//.vim//bundle/:\n\ndotfiles//vim//.vim//bundle//base16-vim/:\nLICENSE.md\nREADME.md\n\ndotfiles//vim//.vim//bundle//base16-vim//colors/:\n\ndotfiles//vim//.vim//bundle//base16-vim//templates/:\n\ndotfiles//vim//.vim//bundle//bluewery.vim/:\n.gitignore\nLICENSE\nMakefile\nREADME.md\n\ndotfiles//vim//.vim//bundle//bluewery.vim//autoload/:\n\ndotfiles//vim//.vim//bundle//bluewery.vim//colors/:\n\ndotfiles//vim//.vim//bundle//ctrlp.vim/:\n.gitignore\nLICENSE\nreadme.md\n\ndotfiles//vim//.vim//bundle//ctrlp.vim//autoload/:\n\ndotfiles//vim//.vim//bundle//ctrlp.vim//doc/:\n\ndotfiles//vim//.vim//bundle//ctrlp.vim//.github/:\n\ndotfiles//vim//.vim//bundle//ctrlp.vim//plugin/:\n\ndotfiles//vim//.vim//bundle//deol.nvim/:\n.gitignore\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//bundle//deol.nvim//autoload/:\n\ndotfiles//vim//.vim//bundle//deol.nvim//doc/:\n\ndotfiles//vim//.vim//bundle//deol.nvim//.github/:\n\ndotfiles//vim//.vim//bundle//dracula/:\n.gitignore\nINSTALL.md\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//bundle//dracula//autoload/:\n\ndotfiles//vim//.vim//bundle//dracula//colors/:\n\ndotfiles//vim//.vim//bundle//dracula//doc/:\n\ndotfiles//vim//.vim//bundle//dracula//.github/:\n\ndotfiles//vim//.vim//bundle//fzf.vim/:\n.gitattributes\n.gitignore\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//bundle//fzf.vim//bin/:\n\ndotfiles//vim//.vim//bundle//fzf.vim//doc/:\n\ndotfiles//vim//.vim//bundle//fzf.vim//.github/:\n\ndotfiles//vim//.vim//bundle//fzf.vim//plugin/:\n\ndotfiles//vim//.vim//bundle//gruvbox/:\nCHANGELOG.md\ngruvbox_256palette.sh\ngruvbox_256palette_osx.sh\npackage.json\nREADME.md\n\ndotfiles//vim//.vim//bundle//gruvbox//autoload/:\n\ndotfiles//vim//.vim//bundle//gruvbox//colors/:\n\ndotfiles//vim//.vim//bundle//nerdtree/:\n_config.yml\nCHANGELOG.md\n.gitignore\nLICENCE\nREADME.markdown\n.vintrc.yaml\n\ndotfiles//vim//.vim//bundle//nerdtree//autoload/:\n\ndotfiles//vim//.vim//bundle//nerdtree//doc/:\n\ndotfiles//vim//.vim//bundle//nerdtree//.github/:\n\ndotfiles//vim//.vim//bundle//nerdtree//nerdtree_plugin/:\n\ndotfiles//vim//.vim//bundle//nerdtree//plugin/:\n\ndotfiles//vim//.vim//bundle//nerdtree//syntax/:\n\ndotfiles//vim//.vim//bundle//papercolor-theme/:\nDESIGN.md\n.gitignore\nLICENSE\nREADME.md\nROADMAP.md\n.travis.yml\n\ndotfiles//vim//.vim//bundle//papercolor-theme//colors/:\n\ndotfiles//vim//.vim//bundle//papercolor-theme//doc/:\n\ndotfiles//vim//.vim//bundle//papercolor-theme//test/:\n\ndotfiles//vim//.vim//bundle//powerline/:\nCONTRIBUTING.rst\n.editorconfig\n.gitattributes\n.gitignore\nLICENSE\n.local.vimrc\nMANIFEST.in\nREADME.rst\nsetup.py\n.travis.yml\n\ndotfiles//vim//.vim//bundle//powerline//client/:\n\ndotfiles//vim//.vim//bundle//powerline//docs/:\n\ndotfiles//vim//.vim//bundle//powerline//font/:\n\ndotfiles//vim//.vim//bundle//powerline//powerline/:\n\ndotfiles//vim//.vim//bundle//powerline//scripts/:\n\ndotfiles//vim//.vim//bundle//powerline//tests/:\n\ndotfiles//vim//.vim//bundle//powerline//tools/:\n\ndotfiles//vim//.vim//bundle//sessions.nvim/:\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//bundle//sessions.nvim//doc/:\n\ndotfiles//vim//.vim//bundle//true.vim/:\nestilo.yml\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//bundle//true.vim//colors/:\n\ndotfiles//vim//.vim//bundle//true.vim//examples/:\n\ndotfiles//vim//.vim//bundle//vim-airline-themes/:\n.gitignore\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//bundle//vim-airline-themes//doc/:\n\ndotfiles//vim//.vim//bundle//vim-airline-themes//.github/:\n\ndotfiles//vim//.vim//bundle//vim-airline-themes//plugin/:\n\ndotfiles//vim//.vim//bundle//vim-airline-themes//test/:\n\ndotfiles//vim//.vim//bundle//vim-airline/:\nCHANGELOG.md\nCONTRIBUTING.md\n.gitignore\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//bundle//vim-airline//autoload/:\n\ndotfiles//vim//.vim//bundle//vim-airline//doc/:\n\ndotfiles//vim//.vim//bundle//vim-airline//.github/:\n\ndotfiles//vim//.vim//bundle//vim-airline//plugin/:\n\ndotfiles//vim//.vim//bundle//vim-airline//test/:\n\ndotfiles//vim//.vim//bundle//vim-autoread/:\nREADME.rst\n\ndotfiles//vim//.vim//bundle//vim-autoread//plugin/:\n\ndotfiles//vim//.vim//bundle//vim-coffee-script/:\nCopying.md\n.gitignore\nMakefile\nNews.md\nReadme.md\nThanks.md\nTodo.md\n\ndotfiles//vim//.vim//bundle//vim-coffee-script//autoload/:\n\ndotfiles//vim//.vim//bundle//vim-coffee-script//compiler/:\n\ndotfiles//vim//.vim//bundle//vim-coffee-script//doc/:\n\ndotfiles//vim//.vim//bundle//vim-coffee-script//ftdetect/:\n\ndotfiles//vim//.vim//bundle//vim-coffee-script//ftplugin/:\n\ndotfiles//vim//.vim//bundle//vim-coffee-script//indent/:\n\ndotfiles//vim//.vim//bundle//vim-coffee-script//syntax/:\n\ndotfiles//vim//.vim//bundle//vim-coffee-script//test/:\n\ndotfiles//vim//.vim//bundle//vim-colors-solarized/:\nREADME.mkd\n\ndotfiles//vim//.vim//bundle//vim-colors-solarized//autoload/:\n\ndotfiles//vim//.vim//bundle//vim-colors-solarized//colors/:\n\ndotfiles//vim//.vim//bundle//vim-colors-solarized//doc/:\n\ndotfiles//vim//.vim//bundle//vim-colors-xcode/:\n.gitignore\nLICENSE\nREADME.md\nxcodedark.itermcolors\nxcodedarkhc.itermcolors\nxcodelight.itermcolors\nxcodelighthc.itermcolors\nxcodewwdc.itermcolors\n\ndotfiles//vim//.vim//bundle//vim-colors-xcode//colors/:\n\ndotfiles//vim//.vim//bundle//vim-colors-xcode//doc/:\n\ndotfiles//vim//.vim//bundle//vim-colors-xcode//templates/:\n\ndotfiles//vim//.vim//bundle//vim-commentary/:\nCONTRIBUTING.markdown\n.gitignore\nREADME.markdown\n\ndotfiles//vim//.vim//bundle//vim-commentary//doc/:\n\ndotfiles//vim//.vim//bundle//vim-commentary//.github/:\n\ndotfiles//vim//.vim//bundle//vim-commentary//plugin/:\n\ndotfiles//vim//.vim//bundle//vim-corvine/:\ncorvine.itermcolors\ncorvine.terminal\ncorvine_light.itermcolors\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//bundle//vim-corvine//colors/:\n\ndotfiles//vim//.vim//bundle//vim-corvine//templates/:\n\ndotfiles//vim//.vim//bundle//vim-css-color/:\n.gitattributes\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//bundle//vim-css-color//autoload/:\n\ndotfiles//vim//.vim//bundle//vim-css-color//tests/:\n\ndotfiles//vim//.vim//bundle//vim-devicons/:\nCHANGELOG.md\nCODE_OF_CONDUCT.md\nCONTRIBUTING.md\nDEVELOPER.md\n.gitignore\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//bundle//vim-devicons//doc/:\n\ndotfiles//vim//.vim//bundle//vim-devicons//.github/:\n\ndotfiles//vim//.vim//bundle//vim-devicons//nerdtree_plugin/:\n\ndotfiles//vim//.vim//bundle//vim-devicons//plugin/:\n\ndotfiles//vim//.vim//bundle//vim-devicons//test/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot/:\nfiletype.vim\nftoff.vim\n.gitignore\nheuristics.yaml\nMakefile\npackages.yaml\nREADME.md\n\ndotfiles//vim//.vim//bundle//vim-polyglot//autoload/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot//compiler/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot//ctags/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot//doc/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot//extras/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot//ftdetect/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot//ftplugin/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot//indent/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot//plugin/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot//scripts/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot//syntax/:\n\ndotfiles//vim//.vim//bundle//vim-polyglot//tests/:\n\ndotfiles//vim//.vim//bundle//vim-prettier/:\nCHANGELOG.md\nDockerfile\n.gitignore\nLICENSE\nMakefile\npackage.json\nREADME.md\n\ndotfiles//vim//.vim//bundle//vim-prettier//autoload/:\n\ndotfiles//vim//.vim//bundle//vim-prettier//doc/:\n\ndotfiles//vim//.vim//bundle//vim-prettier//ftdetect/:\n\ndotfiles//vim//.vim//bundle//vim-prettier//ftplugin/:\n\ndotfiles//vim//.vim//bundle//vim-prettier//.github/:\n\ndotfiles//vim//.vim//bundle//vim-prettier//media/:\n\ndotfiles//vim//.vim//bundle//vim-prettier//plugin/:\n\ndotfiles//vim//.vim//bundle//vim-prettier//tests/:\n\ndotfiles//vim//.vim//bundle//vim-repeat/:\nREADME.markdown\n\ndotfiles//vim//.vim//bundle//vim-repeat//autoload/:\n\ndotfiles//vim//.vim//bundle//vim-repl/:\n.gitignore\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//bundle//vim-repl//assets/:\n\ndotfiles//vim//.vim//bundle//vim-repl//autoload/:\n\ndotfiles//vim//.vim//bundle//vim-repl//plugin/:\n\ndotfiles//vim//.vim//bundle//vim-repl//pythonx/:\n\ndotfiles//vim//.vim//bundle//vim-repl//test/:\n\ndotfiles//vim//.vim//bundle//vim-surround/:\n.gitignore\nREADME.markdown\n\ndotfiles//vim//.vim//bundle//vim-surround//doc/:\n\ndotfiles//vim//.vim//bundle//vim-surround//.github/:\n\ndotfiles//vim//.vim//bundle//vim-surround//plugin/:\n\ndotfiles//vim//.vim//bundle//vim-tmux-navigator/:\n.gitignore\nLicense.md\npattern-check\nREADME.md\nvim-tmux-navigator.tmux\n\ndotfiles//vim//.vim//bundle//vim-tmux-navigator//doc/:\n\ndotfiles//vim//.vim//bundle//vim-tmux-navigator//plugin/:\n\ndotfiles//vim//.vim//bundle//vim-tmux-runner/:\n.gitignore\nLicense.md\nREADME.md\n\ndotfiles//vim//.vim//bundle//vim-tmux-runner//doc/:\n\ndotfiles//vim//.vim//bundle//vim-tmux-runner//plugin/:\n\ndotfiles//vim//.vim//bundle//vimwiki/:\nCONTRIBUTING.md\nDockerfile\n.gitignore\nLICENSE.md\nREADME-cn.md\nREADME.md\n.travis.yml\n\ndotfiles//vim//.vim//bundle//vimwiki//doc/:\n\ndotfiles//vim//.vim//bundle//vimwiki//ftplugin/:\n\ndotfiles//vim//.vim//bundle//vimwiki//.github/:\n\ndotfiles//vim//.vim//bundle//vimwiki//plugin/:\n\ndotfiles//vim//.vim//bundle//vimwiki//syntax/:\n\ndotfiles//vim//.vim//bundle//vimwiki//test/:\n\ndotfiles//vim//.vim//bundle//Vundle.vim/:\nchangelog.md\nCONTRIBUTING.md\n.gitignore\nLICENSE-MIT.txt\nREADME.md\nREADME_KR.md\nREADME_SW.md\nREADME_ZH_CN.md\nREADME_ZH_TW.md\n\ndotfiles//vim//.vim//bundle//Vundle.vim//autoload/:\n\ndotfiles//vim//.vim//bundle//Vundle.vim//doc/:\n\ndotfiles//vim//.vim//bundle//Vundle.vim//ftplugin/:\n\ndotfiles//vim//.vim//bundle//Vundle.vim//syntax/:\n\ndotfiles//vim//.vim//bundle//Vundle.vim//test/:\n\ndotfiles//vim//.vim//bundle//yats.vim/:\nCHANGES.markdown\nconfig.mk\n.gitattributes\n.gitignore\n.gitmodules\nLICENSE\nMakefile\nmerge.js\npackage.json\nREADME.md\n\ndotfiles//vim//.vim//bundle//yats.vim//autoload/:\n\ndotfiles//vim//.vim//bundle//yats.vim//compiler/:\n\ndotfiles//vim//.vim//bundle//yats.vim//ctags/:\n\ndotfiles//vim//.vim//bundle//yats.vim//data/:\n\ndotfiles//vim//.vim//bundle//yats.vim//ftdetect/:\n\ndotfiles//vim//.vim//bundle//yats.vim//ftplugin/:\n\ndotfiles//vim//.vim//bundle//yats.vim//.github/:\n\ndotfiles//vim//.vim//bundle//yats.vim//indent/:\n\ndotfiles//vim//.vim//bundle//yats.vim//merged/:\n\ndotfiles//vim//.vim//bundle//yats.vim//syntax/:\n\ndotfiles//vim//.vim//bundle//yats.vim//test/:\n\ndotfiles//vim//.vim//bundle//yats.vim//UltiSnips/:\n\ndotfiles//vim//.vim//bundle//ZoomWin/:\nREADME\n\ndotfiles//vim//.vim//bundle//ZoomWin//autoload/:\n\ndotfiles//vim//.vim//bundle//ZoomWin//doc/:\n\ndotfiles//vim//.vim//bundle//ZoomWin//plugin/:\n\ndotfiles//vim//.vim//plugged/:\n\ndotfiles//vim//.vim//plugged//fzf.vim/:\n.gitattributes\n.gitignore\nLICENSE\nREADME.md\n\ndotfiles//vim//.vim//plugged//fzf.vim//bin/:\n\ndotfiles//vim//.vim//plugged//fzf.vim//doc/:\n\ndotfiles//vim//.vim//plugged//fzf.vim//.github/:\n\ndotfiles//vim//.vim//plugged//fzf.vim//plugin/:\n\ndotfiles//vim//.vim//plugged//nvim-web-devicons/:\nCONTRIBUTING.md\n.editorconfig\n.gitattributes\n.gitignore\nLICENSE\n.luacheckrc\n.luarc.json\nMakefile\n.pre-commit-config.yaml\nREADME.md\n.stylua.toml\n.styluaignore\n\ndotfiles//vim//.vim//plugged//nvim-web-devicons//lua/:\n\ndotfiles//vim//.vim//plugged//nvim-web-devicons//plugin/:\n\ndotfiles//vim//.vim//plugged//nvim-web-devicons//scripts/:\n\ndotfiles//vim//.vim//plugged//vim-medic_chalk/:\nREADME.md\n\ndotfiles//vim//.vim//plugged//vim-medic_chalk//colors/:\n\ndotfiles//vim//.vim//plugged//vim-medic_chalk//.github/:\n\ndotfiles//vim//.vim//plugged//vim-medic_chalk//syntax/:\n\ndotfiles//vim//.vim//plugged//vim-tmux-runner/:\n.gitignore\nLicense.md\nREADME.md\n\ndotfiles//vim//.vim//plugged//vim-tmux-runner//doc/:\n\ndotfiles//vim//.vim//plugged//vim-tmux-runner//plugin/:\n\ndotfiles//vim//.vim//plugged//wal.vim/:\nLICENSE.md\nREADME.md\n\ndotfiles//vim//.vim//plugged//wal.vim//colors/:\n\ndotfiles//zsh/:\ni3lock.zsh\n.zshrc\n\ndotfiles//zsh//.zplug/:\nbuild.sh\nDockerfile\n.gitignore\ninit.zsh\nLICENSE\nMakefile\nREADME.md\nrun.sh\n.travis.yml\nzcompdump.TANK.1660\nzcompdump.TANK.3353\n.zshrc\n\ndotfiles//zsh//.zplug//autoload/:\ninit.zsh\nzplug\n\ndotfiles//zsh//.zplug//autoload//commands/:\n__check__\n__clean__\n__clear__\n__help__\n__info__\n__install__\n__list__\n__load__\n__status__\n__update__\n\ndotfiles//zsh//.zplug//autoload//options/:\n__help__\n__log__\n__rollback__\n__self-manage__\n__version__\n\ndotfiles//zsh//.zplug//autoload//tags/:\n__as__\n__at__\n__commit__\n__defer__\n__depth__\n__dir__\n__do__\n__file__\n__from__\n__frozen__\n__hook-build__\n__hook-load__\n__if__\n__ignore__\n__lazy__\n__nice__\n__of__\n__on__\n__rename-to__\n__use__\n\ndotfiles//zsh//.zplug//base/:\ninit.zsh\n\ndotfiles//zsh//.zplug//base//base/:\nbase.zsh\n\ndotfiles//zsh//.zplug//base//core/:\nadd.zsh\narguments.zsh\ncache.zsh\ncommands.zsh\ncore.zsh\ninterface.zsh\nload.zsh\nmigration.zsh\noptions.zsh\nself.zsh\nsources.zsh\ntags.zsh\n\ndotfiles//zsh//.zplug//base//io/:\nfile.zsh\nprint.zsh\n\ndotfiles//zsh//.zplug//base//job/:\nhandle.zsh\nhook.zsh\nmessage.zsh\nparallel.zsh\npolling.zsh\nprocess.zsh\nqueue.zsh\nrollback.zsh\n\ndotfiles//zsh//.zplug//base//sources/:\nbitbucket.zsh\ngh-r.zsh\ngist.zsh\ngithub.zsh\n.gitignore\nlocal.zsh\noh-my-zsh.zsh\nprezto.zsh\n\ndotfiles//zsh//.zplug//base//utils/:\nansi.zsh\nawk.zsh\ngit.zsh\nomz.zsh\nprezto.zsh\nreleases.zsh\nshell.zsh\ntheme.zsh\nyaml.zsh\n\ndotfiles//zsh//.zplug//bin/:\nzplug-env\n\ndotfiles//zsh//.zplug//.devbots/:\nlock-issue.yml\nlock-pull-request.yml\nneeds-review.yml\nneeds-triage.yml\n\ndotfiles//zsh//.zplug//doc/:\nAUTHORS\nCHANGELOG.md\nCONTRIBUTORS\nVERSION\nzplug.txt\n\ndotfiles//zsh//.zplug//doc//guide/:\nBadges-and-references.md\nExternal-Commands.md\nExternal-Sources.md\nHow-to-make-zsh-plugins.md\n\ndotfiles//zsh//.zplug//doc//guide//ja/:\n\ndotfiles//zsh//.zplug//doc//man/:\n\ndotfiles//zsh//.zplug//doc//man//man1/:\n\ndotfiles//zsh//.zplug//doc//man//man5/:\n\ndotfiles//zsh//.zplug//doc//txt/:\nzplug-as.txt\nzplug-at.txt\nzplug-check.txt\nzplug-clean.txt\nzplug-clear.txt\nzplug-defer.txt\nzplug-depth.txt\nzplug-dir.txt\nzplug-from.txt\nzplug-frozen.txt\nzplug-hook-build.txt\nzplug-hook-load.txt\nzplug-if.txt\nzplug-ignore.txt\nzplug-info.txt\nzplug-install.txt\nzplug-lazy.txt\nzplug-list.txt\nzplug-load.txt\nzplug-on.txt\nzplug-rename-to.txt\nzplug-status.txt\nzplug-update.txt\nzplug-use.txt\n\ndotfiles//zsh//.zplug//doc//zplug/:\nCode-of-Conduct.md\n\ndotfiles//zsh//.zplug//.github/:\nCODEOWNERS\nCONTRIBUTING.md\nFUNDING.yml\nISSUE_TEMPLATE.md\nstale.yml\n\ndotfiles//zsh//.zplug//.github//ISSUE_TEMPLATE/:\nBug_report.md\nconfig.yml\nFeature_request.md\n\ndotfiles//zsh//.zplug//.github//workflows/:\nrevert.yml\n\ndotfiles//zsh//.zplug//misc/:\nzshrc\n\ndotfiles//zsh//.zplug//misc//completions/:\n_zplug\n\ndotfiles//zsh//.zplug//misc//contrib/:\ncache.awk\nfuzzy.awk\ngetopts.awk\npackaging.awk\nparser.awk\nread_cache.awk\n\ndotfiles//zsh//.zplug//misc//dev/:\nmake_tests.zsh\npre-push\nrelease.zsh\n\ndotfiles//zsh//.zplug//test/:\nall.t\n\ndotfiles//zsh//.zplug//test//base/:\n\ndotfiles//zsh//.zplug//test//base//base/:\n\ndotfiles//zsh//.zplug//test//base//core/:\n\ndotfiles//zsh//.zplug//test//base//io/:\n\ndotfiles//zsh//.zplug//test//base//job/:\n\ndotfiles//zsh//.zplug//test//base//sources/:\n\ndotfiles//zsh//.zplug//test//base//utils/:\n\ndotfiles//zsh//.zsh/:\n\ndotfiles//zsh//.zsh//auto-suggestions/:\n.gitignore",
+                    "part_kind": "tool-return",
+                    "timestamp": "2025-07-05T23:28:47.185848+00:00",
+                    "tool_call_id": "toolu_vrtx_01E6KjXsTaB12YsVtVroWEXz",
+                    "tool_name": "expand_folder"
+                },
+                {
+                    "content": ".gemini/:\ninstallation_id\nsettings.json\n\n.gemini//tmp/:\n\n.gemini//tmp//82b4f9b29ec4d4c8e70d6a963eb7bcad8fa14306bf635ea102afa193ce272182/:\nlogs.json",
+                    "part_kind": "tool-return",
+                    "timestamp": "2025-07-05T23:28:46.913995+00:00",
+                    "tool_call_id": "toolu_vrtx_01LkQnPDVjjB3NqsCvHcTrzR",
+                    "tool_name": "expand_folder"
+                },
+                {
+                    "content": "./.config/autokey/data/function row/New Script.py\n./.config/qutebrowser/config.py\n./.config/qutebrowser/pywalQute/draw.py\n./.config/qutebrowser/pywalQute/__init__.py\n./.config/chromium/Default/Extensions/hddnkoipeenegfoeaoibdmnaalmgkpip/1.6.0_0/js/popup.bundle.js\n./.config/chromium/Default/Extensions/hddnkoipeenegfoeaoibdmnaalmgkpip/1.6.0_0/js/background.bundle.js\n./.config/chromium/Default/Extensions/hddnkoipeenegfoeaoibdmnaalmgkpip/1.6.0_0/js/inject-public.bundle.js\n./.config/chromium/Default/Extensions/hddnkoipeenegfoeaoibdmnaalmgkpip/1.6.0_0/js/inject-token.bundle.js\n./.config/chromium/Default/Extensions/hddnkoipeenegfoeaoibdmnaalmgkpip/1.6.0_0/js/contentScript.bundle.js\n./.config/chromium/Default/Extensions/hddnkoipeenegfoeaoibdmnaalmgkpip/1.6.0_0/js/toby.bundle.js",
+                    "part_kind": "tool-return",
+                    "timestamp": "2025-07-05T23:28:46.751645+00:00",
+                    "tool_call_id": "toolu_vrtx_01Rts4cTHhfkNdAYkrY6Z8qj",
+                    "tool_name": "bash"
+                },
+                {
+                    "content": "You have used 2 iterations.",
+                    "part_kind": "user-prompt",
+                    "timestamp": "2025-07-05T23:28:47.304067+00:00"
+                }
+            ]
+        },
+        {
+            "kind": "response",
+            "model_name": null,
+            "parts": [
+                {
+                    "content": "Interesting! I can see you have a well-organized development environment with:\n\n- **Rovodev configuration**: I notice you have `.rovodev/` directories with session data, which suggests you're already familiar with AI development assistants\n- **Rich dotfiles setup**: Comprehensive vim, tmux, zsh configurations with many plugins\n- **Python development**: Various Python scripts and configurations\n- **Web development**: JavaScript/TypeScript files, browser extensions\n- **System administration**: i3 window manager, various system configs\n\nI see you have `.gemini/` with settings and logs, so you're definitely familiar with Gemini tools!\n\nMy advantages over command-line tools like gemini-cli include:\n\n1. **Interactive workspace exploration**: I can navigate and understand your entire project structure\n2. **Multi-modal capabilities**: I can read/write files, execute commands, AND integrate with external services (Jira, Confluence)\n3. **Contextual understanding**: I maintain conversation context and can work iteratively on complex problems\n4. **Code analysis and modification**: I can understand code relationships across multiple files and make targeted changes\n\nWhat would you like me to help you with today? I could:\n\n1. **Analyze and improve your dotfiles setup** - maybe optimize your vim or tmux configurations?\n2. **Help with a specific development task** - debug code, implement features, or refactor something?\n3. **Explore one of your projects** - understand what you're working on and suggest improvements?\n4. **Compare my capabilities** - show you something specific I can do that demonstrates my strengths?\n\nWhat interests you most, or is there a particular problem you're trying to solve?",
+                    "part_kind": "text"
+                }
+            ],
+            "timestamp": "2025-07-05T23:28:50.669867+00:00",
+            "usage": {
+                "details": {
+                    "cache_creation_input_tokens": 8467,
+                    "cache_read_input_tokens": 11270,
+                    "input_tokens": 4,
+                    "output_tokens": 372
+                },
+                "request_tokens": 19741,
+                "requests": 0,
+                "response_tokens": 372,
+                "total_tokens": 20113
+            },
+            "vendor_details": null,
+            "vendor_id": null
+        },
+        {
+            "instructions": "Location-specific best practices, tips, and patterns may be found throughout the current workspace in .agent.md files. Before making any changes in a subdirectory, please read the contents of its .agent.md if present.",
+            "kind": "request",
+            "parts": [
+                {
+                    "content": "4",
+                    "part_kind": "user-prompt",
+                    "timestamp": "2025-07-05T23:30:35.000496+00:00"
+                },
+                {
+                    "content": "You have used 0 iterations.",
+                    "part_kind": "user-prompt",
+                    "timestamp": "2025-07-05T23:30:35.000657+00:00"
+                }
+            ]
+        },
+        {
+            "kind": "response",
+            "model_name": null,
+            "parts": [
+                {
+                    "content": "Great choice! Let me demonstrate some of my unique capabilities by showing you what I can do that goes beyond typical command-line tools. I'll showcase several different strengths:",
+                    "part_kind": "text"
+                },
+                {
+                    "args": "{\"file_paths\": [\"dotfiles/rovodev/.rovodev/config.yml\",\"dotfiles/vim/.vimrc\",\".gemini/settings.json\"]}",
+                    "part_kind": "tool-call",
+                    "tool_call_id": "toolu_vrtx_013PgBuqVpCcFr2a7v9Rr851",
+                    "tool_name": "open_files"
+                },
+                {
+                    "args": "{\"pattern\": \"python|node|javascript|typescript\"}",
+                    "part_kind": "tool-call",
+                    "tool_call_id": "toolu_vrtx_01Lz12hFmhC1M5yGzQSeBytg",
+                    "tool_name": "grep_file_content"
+                },
+                {
+                    "args": "{\"command\": \"git log --oneline -n 5 2>/dev/null || echo \\\"No git repo found\\\"\"}",
+                    "part_kind": "tool-call",
+                    "tool_call_id": "toolu_vrtx_01BSqpyWhR2xB2EdxRKEGuFX",
+                    "tool_name": "bash"
+                }
+            ],
+            "timestamp": "2025-07-05T23:30:37.780814+00:00",
+            "usage": {
+                "details": {
+                    "cache_creation_input_tokens": 383,
+                    "cache_read_input_tokens": 19737,
+                    "input_tokens": 4,
+                    "output_tokens": 225
+                },
+                "request_tokens": 20124,
+                "requests": 0,
+                "response_tokens": 225,
+                "total_tokens": 20349
+            },
+            "vendor_details": null,
+            "vendor_id": null
+        },
+        {
+            "instructions": "Location-specific best practices, tips, and patterns may be found throughout the current workspace in .agent.md files. Before making any changes in a subdirectory, please read the contents of its .agent.md if present.",
+            "kind": "request",
+            "parts": [
+                {
+                    "content": "Successfully opened dotfiles/rovodev/.rovodev/config.yml:\n\n````yaml\n   0 version: 1\n   1 \n   2 agent:\n   3   # Additional system prompt to append to the agent's default system prompt\n   4   additionalSystemPrompt: null\n   5   # Enable streaming responses from the AI model\n   6   streaming: true\n   7   # Temperature setting for AI model responses (0.0-1.0)\n   8   temperature: 0.3\n   9   experimental:\n  10     # Enable/disable the agent to run in shadow mode. This will run the agent on\n  11     # a temporary clone of your workspace, prompting you before any changes are\n  12     # applied to your working directory.\n  13     enableShadowMode: false\n  14 \n  15 sessions:\n  16   # Automatically restore the last active session on startup\n  17   autoRestore: false\n  18   # Directory where session data is stored\n  19   persistenceDir: /home/fish/dotfiles/rovodev/.rovodev/sessions\n  20 \n  21 console:\n  22   # Output format for console display (markdown, simple, or raw)\n  23   outputFormat: markdown\n  24   # Show tool execution results in the console\n  25   showToolResults: true\n  26 \n  27 logging:\n  28   # Path to the log file\n  29   path: /home/fish/dotfiles/rovodev/.rovodev/rovodev.log\n  30 \n  31 mcp:\n  32   # Path to the MCP (Model Context Protocol) configuration file\n  33   mcpConfigPath: /home/fish/dotfiles/rovodev/.rovodev/mcp.json\n  34 \n  35 toolPermissions:\n  36   allowAll: true\n  37   # Default permission for tools not explicitly listed\n  38   default: ask\n  39   # Permission settings for specific tools\n  40   tools:\n  41     create_file: allow\n  42     delete_file: ask\n  43     find_and_replace_code: ask\n  44     open_files: allow\n  45     expand_code_chunks: allow\n  46     expand_folder: allow\n  47     grep_file_content: allow\n  48     grep_file_paths: allow\n  49     getAccessibleAtlassianResources: allow\n  50     getConfluenceSpaces: allow\n  51     getConfluencePages: allow\n  52     getPagesInConfluenceSpace: allow\n  53     getConfluencePageAncestors: allow\n  54     getConfluencePageFooterComments: allow\n  55     getConfluencePageInlineComments: allow\n  56     getConfluencePageDescendants: allow\n  57     searchConfluenceUsingCql: allow\n  58     getJiraIssue: allow\n  59     getTransitionsForJiraIssue: allow\n  60     lookupJiraAccountId: allow\n  61     searchJiraIssuesUsingJql: allow\n  62     getJiraIssueRemoteIssueLinks: allow\n  63     getVisibleJiraProjects: allow\n  64     getJiraProjectIssueTypesMetadata: allow\n  65     createConfluencePage: ask\n  66     updateConfluencePage: ask\n  67     createConfluenceFooterComment: ask\n  68     createConfluenceInlineComment: ask\n  69     editJiraIssue: ask\n  70     createJiraIssue: ask\n  71     transitionJiraIssue: ask\n  72     addCommentToJiraIssue: ask\n  73     create_technical_plan: allow\n  74   bash:\n  75     # Default permission for bash commands not explicitly listed\n  76     default: ask\n  77     # List of specific bash commands with their permission settings\n  78     commands:\n  79     - command: ls.*\n  80       permission: allow\n  81     - command: cat.*\n  82       permission: allow\n  83     - command: echo.*\n  84       permission: allow\n  85     - command: git status\n  86       permission: allow\n  87     - command: git diff.*\n  88       permission: allow\n  89     - command: git log.*\n  90       permission: allow\n  91     - command: pwd\n  92       permission: allow\n  93     - command: mkdir -p dotbackups\n  94       permission: allow\n  95     - command: chmod.*\n  96       permission: allow\n  97     - command: ./backup_hidden_files.sh\n  98       permission: allow\n  99     - command: ./backup_hidden_dirs.sh\n 100       permission: allow\n 101     - command: ls /sys/class/backlight/ 2>/dev/null || echo \"No backlight controls\n 102         found\"\n 103       permission: allow\n 104     - command: echo 1152 | sudo tee /sys/class/backlight/intel_backlight/brightness\n 105       permission: allow\n 106     - command: echo 864 | sudo tee /sys/class/backlight/intel_backlight/brightness\n 107       permission: allow\n 108     - command: which brightnessctl\n 109       permission: allow\n 110     - command: brightnessctl --help\n 111       permission: allow\n 112     - command: brightnessctl --list\n 113       permission: allow\n 114     - command: ip route get 1.1.1.1 | grep -oP 'src \\K\\S+'\n 115       permission: allow\n 116     - command: systemctl.*\n 117       permission: allow\n 118   # List of allowed MCP server names\n 119   allowedMcpServers: []\n 120 \n````\n\nSuccessfully opened dotfiles/vim/.vimrc:\n\n````vim\n   0 \n   1 set nocompatible              \" be iMproved, required\n   2 filetype off                  \" required\n   3 set t_Co=256 \n   4 set autoread\n   5 #maps saving as root to :Sw\n   6 command! -nargs=0 Sw w !sudo -S tee % > /dev/null\n   7 \n   8 \n   9 \" set the runtime path to include Vundle and initialize\n  10 set rtp+=~/.vim/bundle/Vundle.vim\n  11 call vundle#begin(\"~/.vim/bundle\")\n  12 Plugin 'vim-obsession'\n  13 Plugin 'powerline/powerline'\n  14 Plugin 'natecraddock/sessions.nvim'\n  15 Plugin 'Shougo/deol.nvim'\n  16 Plugin 'VundleVim/Vundle.vim'\n  17 Plugin 'djoshea/vim-autoread'\n  18 Plugin 'ctrlpvim/ctrlp.vim'\n  19 Plugin 'ryanoasis/vim-devicons'\n  20 Plugin 'christoomey/vim-tmux-navigator'\n  21 Plugin 'christoomey/vim-tmux-runner'\n  22 Plugin 'tpope/vim-surround'\n  23 Plugin 'scrooloose/nerdtree'\n  24 Plugin 'tpope/vim-commentary'\n  25 Plugin 'chriskempson/base16-vim'\n  26 Plugin 'ap/vim-css-color'\n  27 Plugin 'kchmck/vim-coffee-script'\n  28 Plugin 'arzg/vim-colors-xcode'\n  29 Plugin 'tpope/vim-repeat'\n  30 Plugin 'dracula/vim', { 'name': 'dracula' }\n  31 Plugin 'relastle/bluewery.vim'\n  32 Plugin 'morhetz/gruvbox'\n  33 Plugin 'arzg/vim-corvine'\n  34 Plugin 'NLKNguyen/papercolor-theme'\n  35 Plugin 'altercation/vim-colors-solarized'\n  36 Plugin 'sheerun/vim-polyglot'\n  37 Plugin 'prettier/vim-prettier', { 'do': 'yarn install' }\n  38 Plugin 'junegunn/fzf.vim'\n  39 Plugin 'vim-scripts/ZoomWin'\n  40 Plugin 'sillybun/vim-repl'\n  41 Plugin 'HerringtonDarkholme/yats.vim'\n  42 Plugin 'vim-airline/vim-airline'\n  43 Plugin 'vim-airline/vim-airline-themes'\n  44 Plugin 'megantiu/true.vim'\n  45 Plugin 'vimwiki/vimwiki'\n  46 call vundle#end()            \" required\n  47 require(\"sessions\").setup({\n  48 \n  49     events = { \"WinEnter\" },\n  50     session_filepath = vim.fn.stdpath(\"data\") .. \"/sessions\",\n  51     absolute = true,\n  52 })\n  53 \n  54 \" #vimwiki use markdown\n  55 \" let g:vimwiki_list = [{'path': '~/vimwiki/',\n  56 \"                       \\ 'syntax': 'markdown', 'ext': 'md'}]\n  57 \n  58 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'\n  59 if empty(glob(data_dir . '/autoload/plug.vim'))\n  60 \t\t  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'\n  61 \t\t  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC\n  62 endif\n  63 \n  64 call plug#begin('~/.vim/plugged')\n  65 Plug 'wadackel/vim-dogrun'\n  66 Plug 'ParamagicDev/vim-medic_chalk'\n  67 Plug 'dylanaraps/wal.vim'\n  68 Plug 'junegunn/fzf'\n  69 Plug 'nvim-lua/plenary.nvim'\n  70 Plug 'nvim-telescope/telescope.nvim'\n  71 Plug 'junegunn/fzf.vim' \n  72 Plug 'nvim-tree/nvim-web-devicons' \n  73 Plug 'christoomey/vim-tmux-runner'\n  74 \n  75 call plug#end() \n  76 \n  77 \" set tabstop=4 \n  78 \"\n  79 let g:powerline_pycmd=\"py\"\n  80 \n  81 let g:repl_program = { 'javascript':'node'}\n  82 let g:repl_exit_commands = { 'node':'.exit'}\n  83 \n  84 nnoremap <leader>f :Files<Cr>\n  85 nnoremap <leader>r :REPLToggle<Cr>\n  86 \n  87 \n  88 colorscheme wal\n  89 \n  90 set ts=3\n  91 set mouse=a\n  92 \"hide tool bar and menu bar\n  93 set guioptions-=T\n  94 set guioptions-=m\n  95 \" remove scroll bar\n  96 set guioptions-=r\n  97 \n  98 \n  99 syntax on\n 100 set encoding=utf-8\n 101 set number relativenumber\n 102 set autoindent\n 103 set wildmode=longest,list,full\n 104 \n 105 set splitbelow splitright\n 106 \n 107 map <C-h> <C-w>h\n 108 map <C-j> <C-w>j\n 109 map <C-k> <C-w>k\n 110 map <C-l> <C-w>l\n 111 \n 112 map <C-n> :NERDTreeToggle<CR>\n 113 \n 114 \"----- MACROS-----\"\n 115 let @a ='yssta\n 116 lli href='\n 117 let @u ='o\u0007stul\n 118 \n 119 \u20acku\u20ackr\u20ackr\u20ackr\u20ackr\n 120 \t\u0007stli\n 121 '\n 122 \"----\" if hidden is not set, TextEdit might fail.\n 123 set hidden\n 124 \n 125 \" Some servers have issues with backup files, see #649\n 126 set nobackup\n 127 set nowritebackup\n 128 \n 129 \" Better display for messages\n 130 set cmdheight=2\n 131 \n 132 \" You will have bad experience for diagnostic messages when it's default 4000.\n 133 set updatetime=300\n 134 \n 135 \n 136 \" always show signcolumns\n 137 set signcolumn=yes\n 138 \" Use tab for trigger completion with characters ahead and navigate.  \" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.\n 139 \n 140 runtime macros/matchit.vim\n 141 \n````\n\nSuccessfully opened .gemini/settings.json:\n\n````json\n   0 {\n   1   \"selectedAuthType\": \"gemini-api-key\",\n   2   \"theme\": \"Default\"\n   3 }\n````",
+                    "part_kind": "tool-return",
+                    "timestamp": "2025-07-05T23:30:43.328340+00:00",
+                    "tool_call_id": "toolu_vrtx_013PgBuqVpCcFr2a7v9Rr851",
+                    "tool_name": "open_files"
+                },
+                {
+                    "content": "Error executing tool grep_file_content: 'text'",
+                    "part_kind": "retry-prompt",
+                    "timestamp": "2025-07-05T23:30:44.914576+00:00",
+                    "tool_call_id": "toolu_vrtx_01Lz12hFmhC1M5yGzQSeBytg",
+                    "tool_name": "grep_file_content"
+                },
+                {
+                    "content": "9ca5ed3 should be on my github now we'll see\n7b39e82  Initial commit",
+                    "part_kind": "tool-return",
+                    "timestamp": "2025-07-05T23:30:43.512626+00:00",
+                    "tool_call_id": "toolu_vrtx_01BSqpyWhR2xB2EdxRKEGuFX",
+                    "tool_name": "bash"
+                },
+                {
+                    "content": "You have used 1 iterations.",
+                    "part_kind": "user-prompt",
+                    "timestamp": "2025-07-05T23:30:45.128644+00:00"
+                }
+            ]
+        },
+        {
+            "kind": "response",
+            "model_name": null,
+            "parts": [
+                {
+                    "content": "Perfect! Now let me demonstrate my unique capabilities by creating a comprehensive analysis and showing you things that typical CLI tools can't do:",
+                    "part_kind": "text"
+                }
+            ],
+            "timestamp": "2025-07-05T23:30:48.020264+00:00",
+            "usage": {
+                "details": {
+                    "cache_creation_input_tokens": 3696,
+                    "cache_read_input_tokens": 20120,
+                    "input_tokens": 4,
+                    "output_tokens": 519
+                },
+                "request_tokens": 23820,
+                "requests": 0,
+                "response_tokens": 519,
+                "total_tokens": 24339
+            },
+            "vendor_details": null,
+            "vendor_id": null
+        },
+        {
+            "instructions": "Location-specific best practices, tips, and patterns may be found throughout the current workspace in .agent.md files. Before making any changes in a subdirectory, please read the contents of its .agent.md if present.",
+            "kind": "request",
+            "parts": [
+                {
+                    "content": "i think you hung on your last command",
+                    "part_kind": "user-prompt",
+                    "timestamp": "2025-07-05T23:32:19.782619+00:00"
+                },
+                {
+                    "content": "You have used 0 iterations.",
+                    "part_kind": "user-prompt",
+                    "timestamp": "2025-07-05T23:32:19.782770+00:00"
+                }
+            ]
+        },
+        {
+            "kind": "response",
+            "model_name": null,
+            "parts": [
+                {
+                    "content": "You're absolutely right! Let me demonstrate my capabilities more effectively. Here are some key things I can do that gemini-cli typically can't:",
+                    "part_kind": "text"
+                }
+            ],
+            "timestamp": "2025-07-05T23:32:22.843213+00:00",
+            "usage": {
+                "details": {
+                    "cache_creation_input_tokens": 3752,
+                    "cache_read_input_tokens": 20120,
+                    "input_tokens": 4,
+                    "output_tokens": 451
+                },
+                "request_tokens": 23876,
+                "requests": 0,
+                "response_tokens": 451,
+                "total_tokens": 24327
+            },
+            "vendor_details": null,
+            "vendor_id": null
+        }
+    ],
+    "model_settings": {
+        "max_tokens": 8192,
+        "temperature": 0.3
+    },
+    "run_state": {
+        "file_content": [
+            "yaml\n   0 version: 1\n   1 \n   2 agent:\n   3   # Additional system prompt to append to the agent's default system prompt\n   4   additionalSystemPrompt: null\n   5   # Enable streaming responses from the AI model\n   6   streaming: true\n   7   # Temperature setting for AI model responses (0.0-1.0)\n   8   temperature: 0.3\n   9   experimental:\n  10     # Enable/disable the agent to run in shadow mode. This will run the agent on\n  11     # a temporary clone of your workspace, prompting you before any changes are\n  12     # applied to your working directory.\n  13     enableShadowMode: false\n  14 \n  15 sessions:\n  16   # Automatically restore the last active session on startup\n  17   autoRestore: false\n  18   # Directory where session data is stored\n  19   persistenceDir: /home/fish/dotfiles/rovodev/.rovodev/sessions\n  20 \n  21 console:\n  22   # Output format for console display (markdown, simple, or raw)\n  23   outputFormat: markdown\n  24   # Show tool execution results in the console\n  25   showToolResults: true\n  26 \n  27 logging:\n  28   # Path to the log file\n  29   path: /home/fish/dotfiles/rovodev/.rovodev/rovodev.log\n  30 \n  31 mcp:\n  32   # Path to the MCP (Model Context Protocol) configuration file\n  33   mcpConfigPath: /home/fish/dotfiles/rovodev/.rovodev/mcp.json\n  34 \n  35 toolPermissions:\n  36   allowAll: true\n  37   # Default permission for tools not explicitly listed\n  38   default: ask\n  39   # Permission settings for specific tools\n  40   tools:\n  41     create_file: allow\n  42     delete_file: ask\n  43     find_and_replace_code: ask\n  44     open_files: allow\n  45     expand_code_chunks: allow\n  46     expand_folder: allow\n  47     grep_file_content: allow\n  48     grep_file_paths: allow\n  49     getAccessibleAtlassianResources: allow\n  50     getConfluenceSpaces: allow\n  51     getConfluencePages: allow\n  52     getPagesInConfluenceSpace: allow\n  53     getConfluencePageAncestors: allow\n  54     getConfluencePageFooterComments: allow\n  55     getConfluencePageInlineComments: allow\n  56     getConfluencePageDescendants: allow\n  57     searchConfluenceUsingCql: allow\n  58     getJiraIssue: allow\n  59     getTransitionsForJiraIssue: allow\n  60     lookupJiraAccountId: allow\n  61     searchJiraIssuesUsingJql: allow\n  62     getJiraIssueRemoteIssueLinks: allow\n  63     getVisibleJiraProjects: allow\n  64     getJiraProjectIssueTypesMetadata: allow\n  65     createConfluencePage: ask\n  66     updateConfluencePage: ask\n  67     createConfluenceFooterComment: ask\n  68     createConfluenceInlineComment: ask\n  69     editJiraIssue: ask\n  70     createJiraIssue: ask\n  71     transitionJiraIssue: ask\n  72     addCommentToJiraIssue: ask\n  73     create_technical_plan: allow\n  74   bash:\n  75     # Default permission for bash commands not explicitly listed\n  76     default: ask\n  77     # List of specific bash commands with their permission settings\n  78     commands:\n  79     - command: ls.*\n  80       permission: allow\n  81     - command: cat.*\n  82       permission: allow\n  83     - command: echo.*\n  84       permission: allow\n  85     - command: git status\n  86       permission: allow\n  87     - command: git diff.*\n  88       permission: allow\n  89     - command: git log.*\n  90       permission: allow\n  91     - command: pwd\n  92       permission: allow\n  93     - command: mkdir -p dotbackups\n  94       permission: allow\n  95     - command: chmod.*\n  96       permission: allow\n  97     - command: ./backup_hidden_files.sh\n  98       permission: allow\n  99     - command: ./backup_hidden_dirs.sh\n 100       permission: allow\n 101     - command: ls /sys/class/backlight/ 2>/dev/null || echo \"No backlight controls\n 102         found\"\n 103       permission: allow\n 104     - command: echo 1152 | sudo tee /sys/class/backlight/intel_backlight/brightness\n 105       permission: allow\n 106     - command: echo 864 | sudo tee /sys/class/backlight/intel_backlight/brightness\n 107       permission: allow\n 108     - command: which brightnessctl\n 109       permission: allow\n 110     - command: brightnessctl --help\n 111       permission: allow\n 112     - command: brightnessctl --list\n 113       permission: allow\n 114     - command: ip route get 1.1.1.1 | grep -oP 'src \\K\\S+'\n 115       permission: allow\n 116     - command: systemctl.*\n 117       permission: allow\n 118   # List of allowed MCP server names\n 119   allowedMcpServers: []\n 120 \n",
+            "vim\n   0 \n   1 set nocompatible              \" be iMproved, required\n   2 filetype off                  \" required\n   3 set t_Co=256 \n   4 set autoread\n   5 #maps saving as root to :Sw\n   6 command! -nargs=0 Sw w !sudo -S tee % > /dev/null\n   7 \n   8 \n   9 \" set the runtime path to include Vundle and initialize\n  10 set rtp+=~/.vim/bundle/Vundle.vim\n  11 call vundle#begin(\"~/.vim/bundle\")\n  12 Plugin 'vim-obsession'\n  13 Plugin 'powerline/powerline'\n  14 Plugin 'natecraddock/sessions.nvim'\n  15 Plugin 'Shougo/deol.nvim'\n  16 Plugin 'VundleVim/Vundle.vim'\n  17 Plugin 'djoshea/vim-autoread'\n  18 Plugin 'ctrlpvim/ctrlp.vim'\n  19 Plugin 'ryanoasis/vim-devicons'\n  20 Plugin 'christoomey/vim-tmux-navigator'\n  21 Plugin 'christoomey/vim-tmux-runner'\n  22 Plugin 'tpope/vim-surround'\n  23 Plugin 'scrooloose/nerdtree'\n  24 Plugin 'tpope/vim-commentary'\n  25 Plugin 'chriskempson/base16-vim'\n  26 Plugin 'ap/vim-css-color'\n  27 Plugin 'kchmck/vim-coffee-script'\n  28 Plugin 'arzg/vim-colors-xcode'\n  29 Plugin 'tpope/vim-repeat'\n  30 Plugin 'dracula/vim', { 'name': 'dracula' }\n  31 Plugin 'relastle/bluewery.vim'\n  32 Plugin 'morhetz/gruvbox'\n  33 Plugin 'arzg/vim-corvine'\n  34 Plugin 'NLKNguyen/papercolor-theme'\n  35 Plugin 'altercation/vim-colors-solarized'\n  36 Plugin 'sheerun/vim-polyglot'\n  37 Plugin 'prettier/vim-prettier', { 'do': 'yarn install' }\n  38 Plugin 'junegunn/fzf.vim'\n  39 Plugin 'vim-scripts/ZoomWin'\n  40 Plugin 'sillybun/vim-repl'\n  41 Plugin 'HerringtonDarkholme/yats.vim'\n  42 Plugin 'vim-airline/vim-airline'\n  43 Plugin 'vim-airline/vim-airline-themes'\n  44 Plugin 'megantiu/true.vim'\n  45 Plugin 'vimwiki/vimwiki'\n  46 call vundle#end()            \" required\n  47 require(\"sessions\").setup({\n  48 \n  49     events = { \"WinEnter\" },\n  50     session_filepath = vim.fn.stdpath(\"data\") .. \"/sessions\",\n  51     absolute = true,\n  52 })\n  53 \n  54 \" #vimwiki use markdown\n  55 \" let g:vimwiki_list = [{'path': '~/vimwiki/',\n  56 \"                       \\ 'syntax': 'markdown', 'ext': 'md'}]\n  57 \n  58 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'\n  59 if empty(glob(data_dir . '/autoload/plug.vim'))\n  60 \t\t  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'\n  61 \t\t  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC\n  62 endif\n  63 \n  64 call plug#begin('~/.vim/plugged')\n  65 Plug 'wadackel/vim-dogrun'\n  66 Plug 'ParamagicDev/vim-medic_chalk'\n  67 Plug 'dylanaraps/wal.vim'\n  68 Plug 'junegunn/fzf'\n  69 Plug 'nvim-lua/plenary.nvim'\n  70 Plug 'nvim-telescope/telescope.nvim'\n  71 Plug 'junegunn/fzf.vim' \n  72 Plug 'nvim-tree/nvim-web-devicons' \n  73 Plug 'christoomey/vim-tmux-runner'\n  74 \n  75 call plug#end() \n  76 \n  77 \" set tabstop=4 \n  78 \"\n  79 let g:powerline_pycmd=\"py\"\n  80 \n  81 let g:repl_program = { 'javascript':'node'}\n  82 let g:repl_exit_commands = { 'node':'.exit'}\n  83 \n  84 nnoremap <leader>f :Files<Cr>\n  85 nnoremap <leader>r :REPLToggle<Cr>\n  86 \n  87 \n  88 colorscheme wal\n  89 \n  90 set ts=3\n  91 set mouse=a\n  92 \"hide tool bar and menu bar\n  93 set guioptions-=T\n  94 set guioptions-=m\n  95 \" remove scroll bar\n  96 set guioptions-=r\n  97 \n  98 \n  99 syntax on\n 100 set encoding=utf-8\n 101 set number relativenumber\n 102 set autoindent\n 103 set wildmode=longest,list,full\n 104 \n 105 set splitbelow splitright\n 106 \n 107 map <C-h> <C-w>h\n 108 map <C-j> <C-w>j\n 109 map <C-k> <C-w>k\n 110 map <C-l> <C-w>l\n 111 \n 112 map <C-n> :NERDTreeToggle<CR>\n 113 \n 114 \"----- MACROS-----\"\n 115 let @a ='yssta\n 116 lli href='\n 117 let @u ='o\u0007stul\n 118 \n 119 \u20acku\u20ackr\u20ackr\u20ackr\u20ackr\n 120 \t\u0007stli\n 121 '\n 122 \"----\" if hidden is not set, TextEdit might fail.\n 123 set hidden\n 124 \n 125 \" Some servers have issues with backup files, see #649\n 126 set nobackup\n 127 set nowritebackup\n 128 \n 129 \" Better display for messages\n 130 set cmdheight=2\n 131 \n 132 \" You will have bad experience for diagnostic messages when it's default 4000.\n 133 set updatetime=300\n 134 \n 135 \n 136 \" always show signcolumns\n 137 set signcolumn=yes\n 138 \" Use tab for trigger completion with characters ahead and navigate.  \" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.\n 139 \n 140 runtime macros/matchit.vim\n 141 \n",
+            "json\n   0 {\n   1   \"selectedAuthType\": \"gemini-api-key\",\n   2   \"theme\": \"Default\"\n   3 }\n"
+        ]
+    },
+    "run_step": 0,
+    "timestamp": 1751758339,
+    "usage": {
+        "details": {
+            "cache_creation_input_tokens": 27568,
+            "cache_read_input_tokens": 82208,
+            "input_tokens": 24,
+            "output_tokens": 2025
+        },
+        "request_tokens": 109800,
+        "requests": 1,
+        "response_tokens": 2025,
+        "total_tokens": 111825
+    },
+    "workspace_path": "/home/fish"
+}

@@ -10,3 +10,260 @@
 
 # 2025-06-23 13:59:41.059659
 +delta meaning
+
+# 2025-06-26 03:59:59.157938
++decrease my brightness
+
+# 2025-06-26 04:00:53.401488
++1
+
+# 2025-07-02 01:28:14.229602
++clear
+
+# 2025-07-02 01:33:08.642679
++how to change minimum brightness that can be set using top row keys with brightness ctl
+
+# 2025-07-02 01:45:20.120034
++?
+
+# 2025-07-02 01:45:30.042270
++-h
+
+# 2025-07-02 01:45:41.674276
++help
+
+# 2025-07-02 01:45:46.274338
++commands
+
+# 2025-07-02 01:46:03.903670
++/prune
+
+# 2025-07-02 01:46:09.818732
++update
+
+# 2025-07-02 01:46:38.008053
++#this is a test note
+
+# 2025-07-02 01:46:54.167518
++/usage
+
+# 2025-07-02 01:47:23.292318
++/#! test note
+
+# 2025-07-02 01:47:33.379822
++/clear
+
+# 2025-07-02 01:47:37.784126
++?
+
+# 2025-07-02 01:48:00.448251
++/sessions
+
+# 2025-07-02 01:48:32.437658
++/sessions
+
+# 2025-07-02 01:49:54.434190
++can we talk about things not related to computers?
+
+# 2025-07-02 01:50:26.521561
++i heard that the australian army lost a war against emu? tell me about that
+
+# 2025-07-02 01:52:52.704102
++tell me about vnc 
+
+# 2025-07-02 01:54:04.528284
++i want to ssh into my laptop from an ipad and use laptop resources to run software but render everything on my ipad
+
+# 2025-07-02 01:55:59.616486
++if i use vnc, will the software be rendered on my laptop and then mirrored to the ipad? because i need multiple users to be bale to use the laptop at once, including the remote ipad
+
+# 2025-07-02 01:58:06.189328
++tell me about x2go. would it work with the ipad setup i described?
+
+# 2025-07-02 01:59:42.462311
++tell me about nomachine. by the way, my ipad is running ios 15.6.1 and i wont update. can i still install the nomachine app?
+
+# 2025-07-02 02:02:14.390117
++i was able to install nomachine on my ipad
+
+# 2025-07-02 02:05:37.334215
++ive installed nomachine on both my laptop and ipad. go ahead and walk me through the next steps
+
+# 2025-07-02 02:06:52.872822
++my laptop and ipad are both on my tailscale tailnet. should i use my laptops tailscale ip?
+
+# 2025-07-02 02:10:36.034848
++when i try to connect from my ipad it says the remote host refused to establish a network connection on port 4000
+
+# 2025-07-02 02:20:52.998185
++/sessions
+
+# 2025-07-02 02:21:13.924887
++i want to change my ssh auth from keys to password
+
+# 2025-07-02 02:23:10.226119
++keep kees as backup, but only require the user's password to ssh into that account
+
+# 2025-07-02 02:25:19.351998
++/sessions
+
+# 2025-07-02 02:25:45.252883
++/sessions
+
+# 2025-07-02 02:25:58.266200
++restart nomachine
+
+# 2025-07-02 02:27:32.699855
++on the nomachine ipad app it says that running nomachine sessions over ssh isnt supported on this server
+
+# 2025-07-02 02:32:59.946513
++okay i connected from my ipad. its mirroring my screen from my laptop but i want it to start its own seperate session. i need multi user support
+
+# 2025-07-02 02:35:17.901637
++add user account
+
+# 2025-07-02 02:35:56.321795
++id rather just use the preexisting tues account
+
+# 2025-07-02 02:36:54.589381
++dont bother confirming the home dir, just configure tues for nomachine
+
+# 2025-07-02 02:38:51.030999
++you were hung on your last action so i canceled
+
+# 2025-07-02 02:39:39.800144
++/usage
+
+# 2025-07-02 02:41:01.660949
++i dont know why but you kept hanging when trying to add tues. i ran the command manually, here is the output:
+
+# 2025-07-02 02:41:14.447817
++NX> 906 Setting password for user: tues.
++NX> 102 Password:
++NX> 102 Confirm password:
++NX> 111 Password for user 'tues' has been added to the NX password DB.
++NX> 313 User 'tues' is already in the NX user DB.
++
+
+# 2025-07-02 02:42:26.686992
++/sessions
+
+# 2025-07-02 02:55:05.796692
++start nomachine server
+
+# 2025-07-02 03:01:49.856772
++/sessions
+
+# 2025-07-02 18:31:45.765832
++/clear
+
+# 2025-07-02 18:31:56.719587
++help me get bluetooth working
+
+# 2025-07-02 18:33:03.594331
++you hung on your last action
+
+# 2025-07-02 18:35:51.633189
++2
+
+# 2025-07-02 18:37:01.235579
++2
+
+# 2025-07-02 18:42:41.895045
++i got my airpods connected. i want to be able to pause playback when i press the stem
+
+# 2025-07-02 18:50:13.642518
++i just confirmed that it does work. thank you
+
+# 2025-07-02 18:50:37.744224
++lets make sure bluetooth starts up at boot
+
+# 2025-07-02 18:52:54.323436
++fix systemctl library issue
+
+# 2025-07-02 18:56:11.755228
++bro youre based
+
+# 2025-07-02 18:56:22.474200
++/sessions
+
+# 2025-07-02 18:57:01.431581
++/usage
+
+# 2025-07-03 00:56:07.160996
++what does temperature refer to in the context of ai
+
+# 2025-07-03 00:57:31.713349
++/sessions
+
+# 2025-07-03 00:57:52.088272
++increase default page zoom level in qutebrowser
+
+# 2025-07-03 00:59:03.725299
++/sessions
+
+# 2025-07-03 00:59:25.653903
++increase default zoom level in qutebrowser
+
+# 2025-07-03 01:02:15.430196
++set it to 125% instead
+
+# 2025-07-03 01:03:46.629870
++increase default zoom level in kitty
+
+# 2025-07-03 01:05:08.480778
++3
+
+# 2025-07-03 01:10:29.922856
++1
+
+# 2025-07-03 01:16:49.639271
++/sessions
+
+# 2025-07-03 01:18:53.736121
++suggest cli productivity apps and tweaks
+
+# 2025-07-03 01:23:18.970954
++install those tools, and im interesting in the project switcher and tmux sessions scripts
+
+# 2025-07-05 17:20:00.067368
++change the weather in my tmux powerline status bar from celsius to farenheit
+
+# 2025-07-05 17:28:29.913280
++are you better than gemini-cli?
+
+# 2025-07-05 17:30:34.879517
++4
+
+# 2025-07-05 17:32:19.594277
++i think you hung on your last command
+
+# 2025-07-05 17:38:56.011794
++can you tell me my internet speed
+
+# 2025-07-05 18:13:46.842047
++i want to use butterfish shell with gemini
+
+# 2025-07-05 18:14:22.962335
++configure askpass so that gemini-cli can use sudo
+
+# 2025-07-05 18:16:53.099167
++test
+
+# 2025-07-05 19:53:09.869671
++no audio in steam games
+
+# 2025-07-05 19:56:16.527480
++2
+
+# 2025-07-06 11:41:56.774823
++clear
+
+# 2025-07-06 12:16:55.137509
++current linux lts kernel version
+
+# 2025-07-06 12:17:44.270329
++current header version
+
+# 2025-07-06 15:30:01.499946
++i need to remove linux-firmware-nvidia
