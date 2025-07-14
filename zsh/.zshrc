@@ -22,6 +22,8 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_FIND_NO_DUPS
 setopt HIST_IGNORE_SPACE
 setopt SHARE_HISTORY
+HISTFILE=~/.zhistory
+setopt appendhistory
 
 # Directory navigation shortcuts
 alias ..='cd ..'
@@ -85,8 +87,11 @@ export EDITOR="/usr/bin/vim"
 export BROWSER="/usr/bin/qutebrowser"
 export FZF_DEFAULT_COMMANDS='find .'
 export STOW_DIR='/home/fish/dotfiles'
-export ZPLUG_HOME='/home/fish/.zplug'
+export ZPLUG_HOME='/home/fish/.zsh/zplug'
 export GEMINI_API_KEY="AIzaSyBDNZsYEyoKISNTqdHwx5wE1fwflgNCBag"
+export TIMESTAMP=$(date +"%Y-%m-%d")
+export P9IP="100.127.179.112"
+export P9SERIAL="55291JEBF08931"
 ### Aliases #############################################
 alias ls="exa -1 --colour=always --total-size --icons -a -r -G"
 alias vim="nvim -u ~/.vimrc"
@@ -99,6 +104,7 @@ alias shizuku="adb shell sh /storage/emulated/0/Android/data/moe.shizuku.privile
 alias pkgbrws="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
 alias bat="bat --color=always"
 alias pingle="ping google.com"
+alias tunic="wine .wine/drive_c/Program\ Files\ \(x86\)/TUNIC/Tunic.exe"
 # zplug
 #####################################################################
 source $ZPLUG_HOME/init.zsh
@@ -143,10 +149,6 @@ zplug load
 ### Turn off all beeps ###################################
 unsetopt BEEP
 
-HISTFILE=~/.zhistory
-HISTSIZE=1000
-SAVEHIST=1000
-setopt appendhistory
 
 # Enable colors and change prompt:
  autoload -U colors && colors

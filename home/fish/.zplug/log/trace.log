@@ -1,2 +1,0 @@
-{"pid":1964211,"shlvl":2,"level":"INFO","dir":"/home/fish/dotfiles","message":"ZPLUG_LOADFILE is not found","trace":["__zplug::log::write::info:2","__zplug::io::file::load:3","/home/fish/.zplug/init.zsh:33","/home/fish/.zshrc:42","zsh:0"],"date":"2025-06-13T13:14:11-0600"}
-{"pid":1964211,"shlvl":2,"level":"INFO","dir":"/home/fish/dotfiles","message":"turn monitor on","trace":["__zplug::log::write::info:2","__zplug::job::polling::periodic:9","/usr/bin/zsh:1"],"date":"2025-06-13T13:14:14-0600"}

@@ -1,4 +1,3 @@
-
 set nocompatible              " be iMproved, required
 filetype off                  " required
 set t_Co=256 
@@ -8,49 +7,49 @@ command! -nargs=0 Sw w !sudo -S tee % > /dev/null
 
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin("~/.vim/bundle")
-Plugin 'vim-obsession'
-Plugin 'powerline/powerline'
-Plugin 'natecraddock/sessions.nvim'
-Plugin 'Shougo/deol.nvim'
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'djoshea/vim-autoread'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'christoomey/vim-tmux-runner'
-Plugin 'tpope/vim-surround'
-Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-commentary'
-Plugin 'chriskempson/base16-vim'
-Plugin 'ap/vim-css-color'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'arzg/vim-colors-xcode'
-Plugin 'tpope/vim-repeat'
-Plugin 'dracula/vim', { 'name': 'dracula' }
-Plugin 'relastle/bluewery.vim'
-Plugin 'morhetz/gruvbox'
-Plugin 'arzg/vim-corvine'
-Plugin 'NLKNguyen/papercolor-theme'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'prettier/vim-prettier', { 'do': 'yarn install' }
-Plugin 'junegunn/fzf.vim'
-Plugin 'vim-scripts/ZoomWin'
-Plugin 'sillybun/vim-repl'
-Plugin 'HerringtonDarkholme/yats.vim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'megantiu/true.vim'
-Plugin 'vimwiki/vimwiki'
-call vundle#end()            " required
-require("sessions").setup({
-
-    events = { "WinEnter" },
-    session_filepath = vim.fn.stdpath("data") .. "/sessions",
-    absolute = true,
-})
+" set rtp+=~/.vim/bundle/Vundle.vim
+" call vundle#begin("~/.vim/bundle")
+" Plugin 'vim-obsession'
+" Plugin 'powerline/powerline'
+" Plugin 'natecraddock/sessions.nvim'
+" Plugin 'Shougo/deol.nvim'
+" Plugin 'VundleVim/Vundle.vim'
+" Plugin 'djoshea/vim-autoread'
+" Plugin 'ctrlpvim/ctrlp.vim'
+" Plugin 'ryanoasis/vim-devicons'
+" Plugin 'christoomey/vim-tmux-navigator'
+" Plugin 'christoomey/vim-tmux-runner'
+" Plugin 'tpope/vim-surround'
+" Plugin 'scrooloose/nerdtree'
+" Plugin 'tpope/vim-commentary'
+" Plugin 'chriskempson/base16-vim'
+" Plugin 'ap/vim-css-color'
+" Plugin 'kchmck/vim-coffee-script'
+" Plugin 'arzg/vim-colors-xcode'
+" Plugin 'tpope/vim-repeat'
+" Plugin 'dracula/vim', { 'name': 'dracula' }
+" Plugin 'relastle/bluewery.vim'
+" Plugin 'morhetz/gruvbox'
+" Plugin 'arzg/vim-corvine'
+" Plugin 'NLKNguyen/papercolor-theme'
+" Plugin 'altercation/vim-colors-solarized'
+" Plugin 'sheerun/vim-polyglot'
+" Plugin 'prettier/vim-prettier', { 'do': 'yarn install' }
+" Plugin 'junegunn/fzf.vim'
+" Plugin 'vim-scripts/ZoomWin'
+" Plugin 'sillybun/vim-repl'
+" Plugin 'HerringtonDarkholme/yats.vim'
+" Plugin 'vim-airline/vim-airline'
+" Plugin 'vim-airline/vim-airline-themes'
+" Plugin 'megantiu/true.vim'
+" Plugin 'vimwiki/vimwiki'
+" call vundle#end()            " required
+" require("sessions").setup({
+" 
+"     events = { "WinEnter" },
+"     session_filepath = vim.fn.stdpath("data") .. "/sessions",
+"     absolute = true,
+" })
 
 " #vimwiki use markdown
 " let g:vimwiki_list = [{'path': '~/vimwiki/',
@@ -63,16 +62,41 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+Plug 'vim-obsession'
+Plug 'powerline/powerline'
+Plug 'djoshea/vim-autoread'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tpope/vim-surround'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-commentary'
+Plug 'chriskempson/base16-vim'
+Plug 'ap/vim-css-color'
+Plug 'kchmck/vim-coffee-script'
+Plug 'arzg/vim-colors-xcode'
+Plug 'tpope/vim-repeat'
+Plug 'dracula/vim'
+Plug 'relastle/bluewery.vim'
+Plug 'morhetz/gruvbox'
+Plug 'arzg/vim-corvine'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'altercation/vim-colors-solarized'
+Plug 'sheerun/vim-polyglot'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'junegunn/fzf.vim'
+Plug 'vim-scripts/ZoomWin'
+Plug 'sillybun/vim-repl'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'megantiu/true.vim'
+Plug 'vimwiki/vimwiki'
 Plug 'wadackel/vim-dogrun'
 Plug 'ParamagicDev/vim-medic_chalk'
 Plug 'dylanaraps/wal.vim'
 Plug 'junegunn/fzf'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'junegunn/fzf.vim' 
-Plug 'nvim-tree/nvim-web-devicons' 
 Plug 'christoomey/vim-tmux-runner'
-
 call plug#end() 
 
 " set tabstop=4 
@@ -113,8 +137,7 @@ map <C-l> <C-w>l
 map <C-n> :NERDTreeToggle<CR>
 
 "----- MACROS-----"
-let @a ='ysstalli href='
-let @u ='ostul€ku€kr€kr€kr€kr	stli'
+let @a ='ysstalli href='
 "----" if hidden is not set, TextEdit might fail.
 set hidden
 

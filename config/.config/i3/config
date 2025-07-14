@@ -17,6 +17,7 @@ exec_always xinput set-prop 11 326 3
 exec_always xinput set-prop 11 333 0 0 1
 
 # exec_always kitty -e tmux
+for_window [class="^qute-qr-code-viewer$"] floating enable, move absolute position 1680px 40px
 
 
 
@@ -40,10 +41,17 @@ bindsym $mod+m exec $term -e ncmpcpp
 bindsym XF86MonBrightnessUp exec brightnessctl -d "intel_backlight" set +5%
 # bindsym XF86MonBrightnessDown exec brightnessctl -d "intel_backlight" set 5%-
 bindsym XF86MonBrightnessDown exec brightnessctl -d "intel_backlight" --min-value=150 set 5%-
-bindsym XF86AudioRaiseVolume exec amixer -c 0 set Master 5+ && $refresh_i3status
-bindsym XF86AudioLowerVolume exec amixer -c 0 set Master 5- && $refresh_i3status
-bindsym XF86AudioMute exec amixer -D pulse set Master toggle
-bindsym XF86AudioMicMute exec togglemic
+# bindsym XF86AudioRaiseVolume exec amixer -c 0 set Master 5+ && $refresh_i3status
+# bindsym XF86AudioLowerVolume exec amixer -c 0 set Master 5- && $refresh_i3status
+# bindsym XF86AudioMute exec amixer -D pulse set Master toggle
+# bindsym XF86AudioMicMute exec togglemic
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+# Decreases volume by 5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+# Toggles mute
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+
 # Media control bindings for Bluetooth devices (AirPods)
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioPause exec playerctl play-pause
