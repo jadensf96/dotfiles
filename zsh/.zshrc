@@ -80,6 +80,7 @@ extract() {
 
 ###########################################################
 ### Environment Variables #################################
+export PATH="/home/fish/bin:$PATH"
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border -e'
 export XKB_DEFAULT_OPTIONS=caps:escape
 export QT_QPA_PLATFORMTHEME=qt5ct
@@ -370,8 +371,21 @@ fkill() {
 # Docker container manager
 fdocker() {
     local container
-    container=$(docker ps -a --format "table {{.Names}}\t{{.Image}}\t{{.Status}}" | fzf --header-lines=1) && docker exec -it $(echo $container | awk '{print $1}') bash
+    container=$(docker ps -a --format "table {{.Names}}	{{.Image}}	{{.Status}}" | fzf --header-lines=1) && docker exec -it $(echo $container | awk '{print $1}') bash
 }
+
+# Function to run ranger and set tmux pane title
+ranger_tmux() {
+    if [[ -n "$TMUX" ]]; then
+        # Set pane title to "ranger"
+        printf "\033]2;ranger\033\\
+"
+    fi
+    command ranger "$@"
+}
+
+# Alias ranger to use the custom function
+alias ranger='ranger_tmux'
 
 # ============================================================================
 # PRODUCTIVITY SHORTCUTS

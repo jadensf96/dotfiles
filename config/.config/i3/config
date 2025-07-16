@@ -11,6 +11,8 @@ set $mod Mod4
  
 exec_always --no-startup-id setxkbmap -option caps:swapescape
 exec_always xset r rate 200 30
+exec_always xmodmap -e "remove Mod5 = Menu"
+exec_always xmodmap -e "add Mod4 = Menu"
 # exec_always xinput set-prop 11 332 0 1 0
 # exec_always xinput set-prop 11 325 3
 exec_always xinput set-prop 11 326 3
@@ -31,6 +33,7 @@ exec --no-startup-id powerline-lemonbar --i3 --height 20 -i 0.05 -- -a 40 -t -f 
 
 #start window compositor
 exec_always compfy --config "/home/fish/.config/.compfy.conf"
+exec --no-startup-id $term -e btop
 
 bindsym $mod+Return exec kitty
 bindsym $mod+w exec qutebrowser
@@ -69,7 +72,7 @@ bindsym  F12 exec toggletouch
 bindsym --release Print exec i3-scrot -e ~/Pictures/Screenshots/%b%d::%H%M%S.png
 bindsym --release Shift+Print exec i3-scrot ~/Pictures/Screenshots/%b%d::%H%M%S.png
 
-bindsym $mod+b exec i3-quickterm shell 
+ 
 
 
 #scratchpad
@@ -85,6 +88,9 @@ for_window [class="dropdown_*"] scratchpad show
 for_window [class="dropdown_*"] move position 1114 3
 for_window [class="dropdown_*"] border pixel 1
 for_window [class="dropdown_*"] resize set 798 278
+
+# Assign btop to its dedicated workspace
+for_window [title="btop"] workspace $ws_btop
 
 bindsym $mod+Escape exec kitty --class "dropdown_term" 
 
@@ -188,6 +194,10 @@ bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
+# Define workspace for btop
+set $ws_btop "b"
+bindsym $mod+b exec --no-startup-id /home/fish/bin/i3_toggle_b_workspace.sh
+
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
@@ -199,6 +209,7 @@ bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+b move container to workspace $ws_btop
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -234,8 +245,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
  bar {
-        modifier mod1
-        mode hide
+        mode dock
         position top
         #status_command powerline-lemonbar --i3 --height 20 -i 0.05 -- -a 40 -t -f 'DejaVu Sans Mono-{height*.6}' -f 'PowerlineSymbols-{height*.75}' -f 'FontAwesome-{height*.65}'
 	status_command i3status
