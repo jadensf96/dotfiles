@@ -131,3 +131,4 @@ config.set('zoom.default', '125%')
 
 # Bindings for normal mode
 config.bind(',qr', 'spawn --userscript qr-gen')
+config.bind(';y', 'hint links spawn --userscript view-in-vlc {hint-url}')

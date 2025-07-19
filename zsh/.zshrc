@@ -557,3 +557,6 @@ echo "   Run 'git_setup_delta' to configure better git diffs"
 
 # Sudo askpass configuration for gemini-cli
 export SUDO_ASKPASS=/usr/bin/ksshaskpass
+
+# Stop ranger from loading default rc.conf
+"export RANGER_LOAD_DEFAULT_RC=FALSE

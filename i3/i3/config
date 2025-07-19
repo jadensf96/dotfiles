@@ -198,6 +198,12 @@ bindsym $mod+0 workspace 10
 set $ws_btop "b"
 bindsym $mod+b exec --no-startup-id /home/fish/bin/i3_toggle_b_workspace.sh
 
+# Define workspace for gemini-cli
+set $ws_gemini "g"
+bindsym $mod+g exec --no-startup-id /home/fish/bin/i3_toggle_g_workspace.sh
+for_window [title="gemini-cli"] workspace $ws_gemini
+exec --no-startup-id $term -T "gemini-cli" -e gemini-cli
+
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
@@ -210,6 +216,7 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 bindsym $mod+Shift+b move container to workspace $ws_btop
+bindsym $mod+Shift+g move container to workspace $ws_gemini
 
 # reload the configuration file
 bindsym $mod+Shift+c reload

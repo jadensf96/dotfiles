@@ -65,34 +65,31 @@ fi
 
 case "$extension" in
     # Archive extensions:
-    a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|\
-    rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)
-        try als "$path" && { dump | trim; exit 0; }
-        try acat "$path" && { dump | trim; exit 3; }
-        try bsdtar -lf "$path" && { dump | trim; exit 0; }
-        exit 1;;
+    tar|tgz|tbz|tbz2|txz|gz|bz2|xz|zip|jar|war|deb|rpm|xpi)
+        bsdtar -tvf "$path" | awk '{size=$5; $1=$2=$3=$4=$5=$6=$7=$8=""; sub(/^[ \t]+/, ""); print size, $0}' | sort -rnk1 | while read -r size name; do printf "%-10s %s\n" "$(numfmt --to=si --suffix=B --padding=8 $size)" "$name"; done | head -n $maxln && exit 0 || exit 1;;
     rar)
-        # avoid password prompt by providing empty password
-        try unrar -p- lt "$path" && { dump | trim; exit 0; } || exit 1;;
+        unrar l -p- "$path" | grep -E '^[0-9]' | awk '{print $2, $NF}' | sort -rnk1 | while read -r size name; do printf "%-10s %s\n" "$(numfmt --to=si --suffix=B --padding=8 $size)" "$name"; done | head -n $maxln && exit 0 || exit 1;;
     7z)
-        # avoid password prompt by providing empty password
-        try 7z -p l "$path" && { dump | trim; exit 0; } || exit 1;;
+        7z l -slt "$path" | awk '/^Path = /{path=$3} /^Size = /{print $3, path}' | sort -rnk1 | while read -r size name; do printf "%-10s %s\n" "$(numfmt --to=si --suffix=B --padding=8 $size)" "$name"; done | head -n $maxln && exit 0 || exit 1;;
+
     # PDF documents:
     pdf)
-        try pdftotext -l 10 -nopgbrk -q "$path" - && \
-            { dump | trim | fmt -s -w $width; exit 0; } || exit 1;;
+        pdftotext -l 10 -nopgbrk -q "$path" - | fmt -s -w "$width" | head -n $maxln && exit 0 || exit 1;;
+
     # BitTorrent Files
     torrent)
-        try transmission-show "$path" && { dump | trim; exit 5; } || exit 1;;
+        transmission-show "$path" | head -n $maxln && exit 5 || exit 1;;
+
     # ODT Files
     odt|ods|odp|sxw)
-        try odt2txt "$path" && { dump | trim; exit 5; } || exit 1;;
+        odt2txt "$path" | head -n $maxln && exit 5 || exit 1;;
+
     # HTML Pages:
     htm|html|xhtml)
-        try w3m    -dump "$path" && { dump | trim | fmt -s -w $width; exit 4; }
-        try lynx   -dump "$path" && { dump | trim | fmt -s -w $width; exit 4; }
-        try elinks -dump "$path" && { dump | trim | fmt -s -w $width; exit 4; }
-        ;; # fall back to highlight/cat if the text browsers fail
+        w3m -dump "$path" | head -n $maxln | fmt -s -w "$width" && exit 4 ||
+        lynx -dump "$path" | head -n $maxln | fmt -s -w "$width" && exit 4 ||
+        elinks -dump "$path" | head -n $maxln | fmt -s -w "$width" && exit 4 ||
+        exit 1;;
 esac
 
 case "$mimetype" in
