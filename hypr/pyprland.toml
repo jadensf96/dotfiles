@@ -1,0 +1,8 @@
+[pyprland]
+plugins = [ "scratchpads" ]
+
+[scratchpads.wiki]
+animation = "fromBottom"
+command = "alacritty --class nvimwiki -e nvim ~/wiki/index.md"
+class = "nvimwiki"
+size = "75% 45%"

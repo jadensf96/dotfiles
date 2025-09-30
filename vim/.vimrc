@@ -2,8 +2,9 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 set t_Co=256 
 set autoread
-#maps saving as root to :Sw
+"maps saving as root to :Sw
 command! -nargs=0 Sw w !sudo -S tee % > /dev/null
+autocmd BufWritePost *.coffee silent make!
 
 
 " set the runtime path to include Vundle and initialize
@@ -62,7 +63,6 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-Plug 'vim-obsession'
 Plug 'powerline/powerline'
 Plug 'djoshea/vim-autoread'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -82,12 +82,12 @@ Plug 'morhetz/gruvbox'
 Plug 'arzg/vim-corvine'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'altercation/vim-colors-solarized'
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'junegunn/fzf.vim'
 Plug 'vim-scripts/ZoomWin'
 Plug 'sillybun/vim-repl'
-Plug 'HerringtonDarkholme/yats.vim'
+" Plug 'HerringtonDarkholme/yats.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'megantiu/true.vim'
