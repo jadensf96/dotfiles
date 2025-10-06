@@ -7,6 +7,7 @@ setopt HIST_IGNORE_SPACE
 setopt SHARE_HISTORY
 HISTFILE=~/.zhistory
 setopt appendhistory
+ cat /home/fish/.cache/wallust/sequences
 
 ### Add zsh-users/zsh-completions directory to zsh's PATH ###########
 fpath=(path/to/zsh-completions/src $fpath)
@@ -20,6 +21,7 @@ zstyle :deer: show_hidden yes
 ###########################################################
 ### Environment Variables #################################
 export PATH="/home/fish/bin:$PATH"
+export PATH="/home/fish/.cargo/bin:$PATH"
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border -e'
 export XKB_DEFAULT_OPTIONS=caps:escape
 export QT_QPA_PLATFORMTHEME=qt5ct
@@ -31,7 +33,7 @@ export GEMINI_API_KEY="AIzaSyBDNZsYEyoKISNTqdHwx5wE1fwflgNCBag"
 export TIMESTAMP=$(date +"%Y-%m-%d")
 export P9IP="100.127.179.112"
 export P9SERIAL="55291JEBF08931"
-export ZPLUG_HOME="/home/fish/.zsh/zplug"
+export BROWSER="/usr/bin/qutebrowser"
 ### Aliases #############################################
 alias ddg="ddgr --url-handler=w3m --rev"
 alias wiki="wiki-tui"
@@ -121,3 +123,5 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 export PATH="$PATH:/home/fish/.local/bin"
 
 if [ -e /home/fish/.nix-profile/etc/profile.d/nix.sh ]; then . /home/fish/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+

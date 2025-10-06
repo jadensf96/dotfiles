@@ -6,3 +6,11 @@ animation = "fromBottom"
 command = "alacritty --class nvimwiki -e nvim ~/wiki/index.md"
 class = "nvimwiki"
 size = "75% 45%"
+
+[scratchpads.gemini]
+animation = "fromTop"
+command = "kitty --class gemini -e gemini"
+class = "gemini"
+# title =  Gemini - fish
+size = "85% 60%"
+margin = 30
