@@ -1,5 +1,5 @@
 [pyprland]
-plugins = [ "scratchpads" ]
+plugins = [ "scratchpads", "toggle_special"]
 
 [scratchpads.wiki]
 animation = "fromBottom"

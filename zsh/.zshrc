@@ -7,10 +7,14 @@ setopt HIST_IGNORE_SPACE
 setopt SHARE_HISTORY
 HISTFILE=~/.zhistory
 setopt appendhistory
- cat /home/fish/.cache/wallust/sequences
+# cat /home/fish/.cache/wallust/sequences
+# cat ~/.cache/wal/sequences
+# cat ~/.cache/wal/sequences
+# source ~/.cache/wal/colors-tty.sh
 
 ### Add zsh-users/zsh-completions directory to zsh's PATH ###########
 fpath=(path/to/zsh-completions/src $fpath)
+
 
 #for deer inline file browser
 source /home/fish/.zsh/zplug/repos/vifon/deer/deer
@@ -31,7 +35,8 @@ export STOW_DIR='/home/fish/dotfiles'
 export ZPLUG_HOME='/home/fish/.zsh/zplug'
 export GEMINI_API_KEY="AIzaSyBDNZsYEyoKISNTqdHwx5wE1fwflgNCBag"
 export TIMESTAMP=$(date +"%Y-%m-%d")
-export P9IP="100.127.179.112"
+export p9="100.127.179.112"
+export p9="100.72.244.99"
 export P9SERIAL="55291JEBF08931"
 export BROWSER="/usr/bin/qutebrowser"
 ### Aliases #############################################
@@ -52,17 +57,15 @@ zplug "vifon/deer", use:deer
 zplug "fabiogibson/envrc-zsh-plugin"
 zplug "rimraf/k"
 zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-syntax-highlighting"
 zplug "b4b4r07/enhancd", use:enhancd.sh
 zplug "zsh-users/zsh-autosuggestions"
 zplug "sharkdp/fd"
 zplug "denisidoro/navi"
-zplug "joshskidmore/zsh-fzf-history-search"
 
 ### Turn off all beeps ###################################
 unsetopt BEEP
-
+export ZSH_FZF_HISTORY_SEARCH_BIND='^r'
 
 # Enable colors and change prompt:
  autoload -U colors && colors
@@ -78,6 +81,7 @@ _comp_options+=(globdots)		# Include hidden files.
 # vi mode
 bindkey -v
 export KEYTIMEOUT=1
+
 
 # Use vim keys in tab complete menu:
 bindkey -M menuselect 'h' vi-backward-char
@@ -125,3 +129,37 @@ export PATH="$PATH:/home/fish/.local/bin"
 if [ -e /home/fish/.nix-profile/etc/profile.d/nix.sh ]; then . /home/fish/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
+
+### Added by Zinit's installer
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
+fi
+
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# zsh-fzf-history-search
+zinit ice lucid wait'0'
+zinit light joshskidmore/zsh-fzf-history-search
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+### End of Zinit's installer chunk

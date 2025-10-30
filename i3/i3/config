@@ -7,42 +7,33 @@ for_window [class="^.*"] border pixel 2
 gaps outer 0
 gaps inner 6
 set $term /usr/bin/kitty
-set $mod Mod4
- 
+exec source /home/fish/.xsessionrc
 exec_always --no-startup-id setxkbmap -option caps:swapescape
+set $mod Mod4
+exec "powerline-lemonbar --height 24 -- -t -f 'DejaVu Sans Mono-{height*0.8}' -f 'PowerlineSymbols-{height*0.8}' -f 'FontAwesome-{height*0.8}'"
 exec_always xset r rate 200 30
 exec_always xmodmap -e "remove Mod5 = Menu"
 exec_always xmodmap -e "add Mod4 = Menu"
-# exec_always xinput set-prop 11 332 0 1 0
-# exec_always xinput set-prop 11 325 3
-exec_always xinput set-prop 11 326 3
-exec_always xinput set-prop 11 333 0 0 1
-
-# exec_always kitty -e tmux
+exec_always feg --bg-scale /home/fish/.config/wall.png
 for_window [class="^qute-qr-code-viewer$"] floating enable, move absolute position 1680px 40px
 
-
-
 #sets image stored in wall.png as wallpaper
-exec --no-startup-id wal -R
+# exec --no-startup-id wal -R
+exec --no-startup-id feh --bg-scale /home/fish/.config/wall.png
 exec --no-startup-id volumeicon
-### starts lemonbar- ###
-exec --no-startup-id powerline-lemonbar --i3 --height 20 -i 0.05 -- -a 40 -t -f 'DejaVu Sans Mono-{height*.6}' -f 'PowerlineSymbols-{height*.75}' -f 'FontAwesome-{height*.65}'
 # ### improves lemonbar, allegedly ###
-# exec --no-startup-id powerline-globmenu
+ exec --no-startup-id powerline-globmenu
 
 #start window compositor
 exec_always compfy --config "/home/fish/.config/.compfy.conf"
-exec --no-startup-id $term -e btop
 
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec $term
 bindsym $mod+w exec qutebrowser
-bindsym $mod+Prior exec $term -fade 20 -e neomutt
+# bindsym $mod+Prior exec $term -fade 20 -e neomutt
 bindsym $mod+backslash exec $term -e vim ~/vimwiki/index.wiki
 bindsym $mod+Next exec $term -fade 20 -e newsboat
-bindsym $mod+m exec $term -e ncmpcpp
+# bindsym $mod+m exec $term -e ncmpcpp
 bindsym XF86MonBrightnessUp exec brightnessctl -d "intel_backlight" set +5%
-# bindsym XF86MonBrightnessDown exec brightnessctl -d "intel_backlight" set 5%-
 bindsym XF86MonBrightnessDown exec brightnessctl -d "intel_backlight" --min-value=150 set 5%-
 # bindsym XF86AudioRaiseVolume exec amixer -c 0 set Master 5+ && $refresh_i3status
 # bindsym XF86AudioLowerVolume exec amixer -c 0 set Master 5- && $refresh_i3status
@@ -64,7 +55,6 @@ bindsym XF86AudioStop exec playerctl stop
 bindsym XF86Display exec blurlocker
 bindsym  F12 exec toggletouch
 
-# bindsym $mod+Caps_Lock exec toggletrack
 
 #exec_always xset s off -dpms
 
@@ -72,11 +62,12 @@ bindsym  F12 exec toggletouch
 bindsym --release Print exec i3-scrot -e ~/Pictures/Screenshots/%b%d::%H%M%S.png
 bindsym --release Shift+Print exec i3-scrot ~/Pictures/Screenshots/%b%d::%H%M%S.png
 
- 
-
+#controller binds
+bindsym $mod+Right workspace next
+bindsym $mod+Left workspace prev
 
 #scratchpad
-bindsym $mod+y move scratchpad 
+bindsym $mod+y move scratchpad
 bindsym $mod+u scratchpad show
 
 # #---Dropdown Windows---# #
@@ -85,7 +76,7 @@ for_window [class="dropdown_*"] floating enable
 for_window [class="dropdown_*"] move scratchpad
 for_window [class="dropdown_*"] sticky enable
 for_window [class="dropdown_*"] scratchpad show
-for_window [class="dropdown_*"] move position 1114 3
+for_window [class="dropdown_*"] move position 1114 30
 for_window [class="dropdown_*"] border pixel 1
 for_window [class="dropdown_*"] resize set 798 278
 
@@ -93,14 +84,6 @@ for_window [class="dropdown_*"] resize set 798 278
 for_window [title="btop"] workspace $ws_btop
 
 bindsym $mod+Escape exec kitty --class "dropdown_term" 
-
-# Should you change your keyboard layout some time, delete
-# this file and re-run i3-config-wizard(1).
-#
-
-# i3 config file (v4)
-#
-# Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -119,7 +102,6 @@ font pango:monospace 12
 # clear in small sizes. However, its unicode glyph coverage is limited, the old
 # X core fonts rendering does not support right-to-left and this being a bitmap
 # font, it doesn’t scale on retina/hidpi displays.
-#
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -139,23 +121,16 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-# alternatively, you can use the cursor keys:
-# bindsym $mod+Left focus left
-# bindsym $mod+Down focus down
-# bindsym $mod+Up focus up
-# bindsym $mod+Right focus right
-
 # move focused window
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# alternatively, you can use the cursor keys:
-# bindsym $mod+Shift+Left move left
-# bindsym $mod+Shift+Down move down
-# bindsym $mod+Shift+Up move up
-# bindsym $mod+Shift+Right move right
+#for navigating tabbed layout w/ binds i got used to from qtbrwsr
+bindsym SHIFT+j exec i3-switch-tabs right
+bindsym SHIFT+k exec i3-switch-tabs left
+
 
 # split in horizontal orientation
 bindsym $mod+semicolon split h
@@ -164,11 +139,11 @@ bindsym $mod+semicolon split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+bindsym $mod+f fullscreen  toggle
 
 # change container layout (stacked, tabbed, toggle split)
-#bindsym $mod+s layout stacking
-#bindsym $mod+w layout tabbed
+bindsym $mod+s layout stacking
+bindsym $mod+z layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
@@ -176,11 +151,10 @@ bindsym $mod+Shift+y floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+i focus mode_toggle 
-# focus the parent container
-#bindsym $mod+a focus parent
 
-# focus the child container
-#bindsym $mod+d focus child
+# focus the parent container
+bindsym $mod+n focus parent
+bindsym $mod+Shift+n focus child
 
 # switch to workspace
 bindsym $mod+1 workspace 1
@@ -192,17 +166,20 @@ bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+bindsym $mod+b workspace $ws_btop
+bindsym $mod+g workspace $ws_gemini
 
-# Define workspace for btop
-set $ws_btop "b"
-bindsym $mod+b exec --no-startup-id /home/fish/bin/i3_toggle_b_workspace.sh
 
-# Define workspace for gemini-cli
-set $ws_gemini "g"
-bindsym $mod+g exec --no-startup-id /home/fish/bin/i3_toggle_g_workspace.sh
-for_window [title="gemini-cli"] workspace $ws_gemini
-exec --no-startup-id $term -T "gemini-cli" -e gemini-cli
+# # Define workspace for btop
+# set $ws_btop "b"
+# exec --no-startup-id $term -e btop
+# bindsym $mod+b exec --no-startup-id /home/fish/bin/i3_toggle_b_workspace.sh
+#
+# # Define workspace for gemini-cli
+# set $ws_gemini "g"
+# bindsym $mod+g exec --no-startup-id /home/fish/bin/i3_toggle_g_workspace.sh
+# for_window [title="gemini-cli"] workspace $ws_gemini
+# exec --no-startup-id $term -T "gemini-cli" -e gemini-cli
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
@@ -223,20 +200,15 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec pkill x && pkill powerline-lemonbar
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 5 px or 5 ppt
+        bindsym j resize grow height 5 px or 5 ppt
+        bindsym k resize shrink height 5 px or 5 ppt
+        bindsym l resize grow width 5 px or 5 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -246,21 +218,7 @@ mode "resize" {
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
-        bindsym Caps_Lock mode "default"
+        bindsym Escape mode "default"
 }
 
 bindsym $mod+r mode "resize"
-
- bar {
-        mode dock
-        position top
-        #status_command powerline-lemonbar --i3 --height 20 -i 0.05 -- -a 40 -t -f 'DejaVu Sans Mono-{height*.6}' -f 'PowerlineSymbols-{height*.75}' -f 'FontAwesome-{height*.65}'
-	status_command i3status
- }
-
-# bar {
-#     i3bar_command i3bgbar
-
-#     status_command python /path/to/powerline/bindings/i3/powerline-i3.py
-#     font pango:PowerlineFont 12
-# }
