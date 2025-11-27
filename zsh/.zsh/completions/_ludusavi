@@ -1,0 +1,1644 @@
+#compdef ludusavi
+
+autoload -U is-at-least
+
+_ludusavi() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" : \
+'--config=[Use configuration found in DIRECTORY]:DIRECTORY:_files' \
+'--no-manifest-update[Disable automatic/implicit manifest update checks]' \
+'--try-manifest-update[Ignore any errors during automatic/implicit manifest update checks]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_ludusavi_commands" \
+"*::: :->ludusavi" \
+&& ret=0
+    case $state in
+    (ludusavi)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-command-$line[1]:"
+        case $line[1] in
+            (backup)
+_arguments "${_arguments_options[@]}" : \
+'--path=[Directory in which to store the backup. It will be created if it does not already exist. When not specified, this defers to the config file]:PATH: ' \
+'--wine-prefix=[Extra Wine/Proton prefix to check for saves. This should be a folder with an immediate child folder named "drive_c" (or another letter)]:WINE_PREFIX: ' \
+'--sort=[Sort the game list by different criteria. When not specified, this defers to the config file]:SORT:(name name-rev size size-rev status status-rev)' \
+'--format=[Format in which to store new backups. When not specified, this defers to the config file]:FORMAT:(simple zip)' \
+'--compression=[Compression method to use for new zip backups. When not specified, this defers to the config file]:COMPRESSION:(none deflate bzip2 zstd)' \
+'--compression-level=[Compression level to use for new zip backups. When not specified, this defers to the config file. Valid ranges\: 1 to 9 for deflate/bzip2, -7 to 22 for zstd]:COMPRESSION_LEVEL: ' \
+'--full-limit=[Maximum number of full backups to retain per game. Must be between 1 and 255 (inclusive). When not specified, this defers to the config file]:FULL_LIMIT: ' \
+'--differential-limit=[Maximum number of differential backups to retain per full backup. Must be between 0 and 255 (inclusive). When not specified, this defers to the config file]:DIFFERENTIAL_LIMIT: ' \
+'--preview[List out what would be included, but don'\''t actually perform the operation]' \
+'--force[Don'\''t ask for confirmation]' \
+'--no-force-cloud-conflict[Even if the \`--force\` option has been specified, ask how to resolve any cloud conflict rather than ignoring it and continuing silently]' \
+'--api[Print information to stdout in machine-readable JSON. This replaces the default, human-readable output]' \
+'--gui[Use GUI dialogs for prompts and some information]' \
+'--cloud-sync[Upload any changes to the cloud when the backup is complete. If the local and cloud backups are not in sync to begin with, then nothing will be uploaded. This has no effect on previews. When not specified, this defers to the config file]' \
+'(--cloud-sync)--no-cloud-sync[Don'\''t perform any cloud checks or synchronization. When not specified, this defers to the config file]' \
+'--dump-registry[Include the serialized registry content in the output. Only includes the native Windows registry, not Wine]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'*::games -- Only back up these specific games. Alternatively supports stdin (one value per line):' \
+&& ret=0
+;;
+(restore)
+_arguments "${_arguments_options[@]}" : \
+'--path=[Directory containing a Ludusavi backup. When not specified, this defers to the config file]:PATH: ' \
+'--sort=[Sort the game list by different criteria. When not specified, this defers to Ludusavi'\''s config file]:SORT:(name name-rev size size-rev status status-rev)' \
+'--backup=[Restore a specific backup, using an ID returned by the \`backups\` command. This is only valid when restoring a single game]:BACKUP: ' \
+'--preview[List out what would be included, but don'\''t actually perform the operation]' \
+'--force[Don'\''t ask for confirmation]' \
+'--no-force-cloud-conflict[Even if the \`--force\` option has been specified, ask how to resolve any cloud conflict rather than ignoring it and continuing silently]' \
+'--api[Print information to stdout in machine-readable JSON. This replaces the default, human-readable output]' \
+'--gui[Use GUI dialogs for prompts and some information]' \
+'--cloud-sync[Warn if the local and cloud backups are out of sync. The restore will still proceed regardless. This has no effect on previews. When not specified, this defers to the config file]' \
+'(--cloud-sync)--no-cloud-sync[Don'\''t perform any cloud checks or synchronization. When not specified, this defers to the config file]' \
+'--dump-registry[Include the serialized registry content in the output. Only includes the native Windows registry, not Wine]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'*::games -- Only restore these specific games. Alternatively supports stdin (one value per line):' \
+&& ret=0
+;;
+(complete)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_ludusavi__complete_commands" \
+"*::: :->complete" \
+&& ret=0
+
+    case $state in
+    (complete)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-complete-command-$line[1]:"
+        case $line[1] in
+            (bash)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(fish)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(zsh)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(powershell)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(elvish)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__complete__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-complete-help-command-$line[1]:"
+        case $line[1] in
+            (bash)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(fish)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(zsh)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(powershell)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(elvish)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(backups)
+_arguments "${_arguments_options[@]}" : \
+'--path=[Directory in which to find backups. When unset, this defaults to the restore path from the config file]:PATH: ' \
+'--api[Print information to stdout in machine-readable JSON. This replaces the default, human-readable output]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'*::games -- Only report these specific games. Alternatively supports stdin (one value per line):' \
+&& ret=0
+;;
+(find)
+_arguments "${_arguments_options[@]}" : \
+'--path=[Directory in which to find backups. When unset, this defaults to the restore path from the config file]:PATH: ' \
+'--steam-id=[Look up game by a Steam ID]:STEAM_ID: ' \
+'--gog-id=[Look up game by a GOG ID]:GOG_ID: ' \
+'--lutris-id=[Look up game by a Lutris slug]:LUTRIS_ID: ' \
+'--api[Print information to stdout in machine-readable JSON. This replaces the default, human-readable output]' \
+'--multiple[Keep looking for all potential matches, instead of stopping at the first match]' \
+'--backup[Ensure the game is recognized in a backup context]' \
+'--restore[Ensure the game is recognized in a restore context]' \
+'--normalized[Look up game by an approximation of the title. Ignores capitalization, "edition" suffixes, year suffixes, and some special symbols. This may find multiple games for a single input]' \
+'--fuzzy[Look up games with fuzzy matching. This may find multiple games for a single input]' \
+'--disabled[Select games that are disabled]' \
+'--partial[Select games that have some saves disabled]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'*::names -- Look up game by an exact title. With multiple values, they will be checked in the order given. Alternatively supports stdin (one value per line):' \
+&& ret=0
+;;
+(manifest)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_ludusavi__manifest_commands" \
+"*::: :->manifest" \
+&& ret=0
+
+    case $state in
+    (manifest)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-manifest-command-$line[1]:"
+        case $line[1] in
+            (show)
+_arguments "${_arguments_options[@]}" : \
+'--api[Print information to stdout in machine-readable JSON]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(update)
+_arguments "${_arguments_options[@]}" : \
+'--force[Check again even if the most recent check was within the last 24 hours]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__manifest__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-manifest-help-command-$line[1]:"
+        case $line[1] in
+            (show)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(config)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_ludusavi__config_commands" \
+"*::: :->config" \
+&& ret=0
+
+    case $state in
+    (config)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-config-command-$line[1]:"
+        case $line[1] in
+            (show)
+_arguments "${_arguments_options[@]}" : \
+'--api[Print information to stdout in machine-readable JSON]' \
+'--default[Print the default configuration]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__config__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-config-help-command-$line[1]:"
+        case $line[1] in
+            (show)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(cloud)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_ludusavi__cloud_commands" \
+"*::: :->cloud" \
+&& ret=0
+
+    case $state in
+    (cloud)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-cloud-command-$line[1]:"
+        case $line[1] in
+            (set)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_ludusavi__cloud__set_commands" \
+"*::: :->set" \
+&& ret=0
+
+    case $state in
+    (set)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-cloud-set-command-$line[1]:"
+        case $line[1] in
+            (none)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(custom)
+_arguments "${_arguments_options[@]}" : \
+'--id=[]:ID: ' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(box)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(dropbox)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(google-drive)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(onedrive)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(ftp)
+_arguments "${_arguments_options[@]}" : \
+'--host=[Host URL]:HOST: ' \
+'--port=[Port number]:PORT: ' \
+'--username=[Username for authentication]:USERNAME: ' \
+'--password=[Password for authentication]:PASSWORD: ' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(smb)
+_arguments "${_arguments_options[@]}" : \
+'--host=[Host URL]:HOST: ' \
+'--port=[Port number]:PORT: ' \
+'--username=[Username for authentication]:USERNAME: ' \
+'--password=[Password for authentication]:PASSWORD: ' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(webdav)
+_arguments "${_arguments_options[@]}" : \
+'--url=[URL]:URL: ' \
+'--username=[Username for authentication]:USERNAME: ' \
+'--password=[Password for authentication]:PASSWORD: ' \
+'--provider=[Service provider]:PROVIDER:(other nextcloud owncloud sharepoint sharepoint-ntlm)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__cloud__set__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-cloud-set-help-command-$line[1]:"
+        case $line[1] in
+            (none)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(custom)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(box)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(dropbox)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(google-drive)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(onedrive)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(ftp)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(smb)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(webdav)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(upload)
+_arguments "${_arguments_options[@]}" : \
+'--local=[Local folder path for backups. When not specified, this defers to the backup path from the config file]:LOCAL: ' \
+'--cloud=[Cloud folder path for backups. When not specified, this defers to the config file]:CLOUD: ' \
+'--force[Don'\''t ask for confirmation]' \
+'--preview[Check what would change, but don'\''t actually apply the changes]' \
+'--api[Print information to stdout in machine-readable JSON. This replaces the default, human-readable output]' \
+'--gui[Use GUI dialogs for prompts and some information]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'*::games -- Only sync these specific games. Alternatively supports stdin (one value per line):' \
+&& ret=0
+;;
+(download)
+_arguments "${_arguments_options[@]}" : \
+'--local=[Local folder path for backups. When not specified, this defers to the backup path from the config file]:LOCAL: ' \
+'--cloud=[Cloud folder path for backups. When not specified, this defers to the config file]:CLOUD: ' \
+'--force[Don'\''t ask for confirmation]' \
+'--preview[Check what would change, but don'\''t actually apply the changes]' \
+'--api[Print information to stdout in machine-readable JSON. This replaces the default, human-readable output]' \
+'--gui[Use GUI dialogs for prompts and some information]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'*::games -- Only sync these specific games. Alternatively supports stdin (one value per line):' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__cloud__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-cloud-help-command-$line[1]:"
+        case $line[1] in
+            (set)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__cloud__help__set_commands" \
+"*::: :->set" \
+&& ret=0
+
+    case $state in
+    (set)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-cloud-help-set-command-$line[1]:"
+        case $line[1] in
+            (none)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(custom)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(box)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(dropbox)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(google-drive)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(onedrive)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(ftp)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(smb)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(webdav)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(upload)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(download)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(wrap)
+_arguments "${_arguments_options[@]}" : \
+'--infer=[Infer game name from commands based on launcher type]:LAUNCHER:(heroic lutris steam)' \
+'--name=[Directly set game name as known to Ludusavi]:NAME: ' \
+'--path=[Directory in which to find/store backups. It will be created if it does not already exist. When not specified, this defers to the config file]:PATH: ' \
+'--format=[Format in which to store new backups. When not specified, this defers to the config file]:FORMAT:(simple zip)' \
+'--compression=[Compression method to use for new zip backups. When not specified, this defers to the config file]:COMPRESSION:(none deflate bzip2 zstd)' \
+'--compression-level=[Compression level to use for new zip backups. When not specified, this defers to the config file. Valid ranges\: 1 to 9 for deflate/bzip2, -7 to 22 for zstd]:COMPRESSION_LEVEL: ' \
+'--full-limit=[Maximum number of full backups to retain per game. Must be between 1 and 255 (inclusive). When not specified, this defers to the config file]:FULL_LIMIT: ' \
+'--differential-limit=[Maximum number of differential backups to retain per full backup. Must be between 0 and 255 (inclusive). When not specified, this defers to the config file]:DIFFERENTIAL_LIMIT: ' \
+'--force[Don'\''t ask for any confirmation]' \
+'--force-backup[Don'\''t ask for confirmation when backing up]' \
+'--force-restore[Don'\''t ask for confirmation when restoring]' \
+'--no-force-cloud-conflict[Even if another \`--force\` option has been specified, ask how to resolve any cloud conflict rather than ignoring it and continuing silently]' \
+'--gui[Show a GUI notification during restore/backup]' \
+'--cloud-sync[Upload any changes to the cloud when the backup is complete. If the local and cloud backups are not in sync to begin with, then nothing will be uploaded. When not specified, this defers to the config file]' \
+'(--cloud-sync)--no-cloud-sync[Don'\''t perform any cloud checks or synchronization. When not specified, this defers to the config file]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'*::commands -- Commands to launch the game. Use `--` first to separate these from the `wrap` options; e.g., `ludusavi wrap --name foo -- foo.exe --windowed`:' \
+&& ret=0
+;;
+(api)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- JSON data - may also be passed via stdin:' \
+&& ret=0
+;;
+(schema)
+_arguments "${_arguments_options[@]}" : \
+'--format=[]:FORMAT:(json yaml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_ludusavi__schema_commands" \
+"*::: :->schema" \
+&& ret=0
+
+    case $state in
+    (schema)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-schema-command-$line[1]:"
+        case $line[1] in
+            (api-input)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(api-output)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(config)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(general-output)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__schema__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-schema-help-command-$line[1]:"
+        case $line[1] in
+            (api-input)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(api-output)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(config)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(general-output)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-help-command-$line[1]:"
+        case $line[1] in
+            (backup)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(restore)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(complete)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__help__complete_commands" \
+"*::: :->complete" \
+&& ret=0
+
+    case $state in
+    (complete)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-help-complete-command-$line[1]:"
+        case $line[1] in
+            (bash)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(fish)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(zsh)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(powershell)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(elvish)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(backups)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(find)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(manifest)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__help__manifest_commands" \
+"*::: :->manifest" \
+&& ret=0
+
+    case $state in
+    (manifest)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-help-manifest-command-$line[1]:"
+        case $line[1] in
+            (show)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(config)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__help__config_commands" \
+"*::: :->config" \
+&& ret=0
+
+    case $state in
+    (config)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-help-config-command-$line[1]:"
+        case $line[1] in
+            (show)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(cloud)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__help__cloud_commands" \
+"*::: :->cloud" \
+&& ret=0
+
+    case $state in
+    (cloud)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-help-cloud-command-$line[1]:"
+        case $line[1] in
+            (set)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__help__cloud__set_commands" \
+"*::: :->set" \
+&& ret=0
+
+    case $state in
+    (set)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-help-cloud-set-command-$line[1]:"
+        case $line[1] in
+            (none)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(custom)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(box)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(dropbox)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(google-drive)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(onedrive)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(ftp)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(smb)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(webdav)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(upload)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(download)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(wrap)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(api)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(schema)
+_arguments "${_arguments_options[@]}" : \
+":: :_ludusavi__help__schema_commands" \
+"*::: :->schema" \
+&& ret=0
+
+    case $state in
+    (schema)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:ludusavi-help-schema-command-$line[1]:"
+        case $line[1] in
+            (api-input)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(api-output)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(config)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(general-output)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+}
+
+(( $+functions[_ludusavi_commands] )) ||
+_ludusavi_commands() {
+    local commands; commands=(
+'backup:Back up data' \
+'restore:Restore data' \
+'complete:Generate shell completion scripts' \
+'backups:Show backups' \
+'find:Find game titles' \
+'manifest:Options for Ludusavi'\''s data set' \
+'config:Options for Ludusavi'\''s configuration' \
+'cloud:Cloud sync' \
+'wrap:Wrap restore/backup around game execution' \
+'api:Execute bulk requests using JSON input' \
+'schema:Display schemas that Ludusavi uses' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi commands' commands "$@"
+}
+(( $+functions[_ludusavi__api_commands] )) ||
+_ludusavi__api_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi api commands' commands "$@"
+}
+(( $+functions[_ludusavi__backup_commands] )) ||
+_ludusavi__backup_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi backup commands' commands "$@"
+}
+(( $+functions[_ludusavi__backups_commands] )) ||
+_ludusavi__backups_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi backups commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud_commands] )) ||
+_ludusavi__cloud_commands() {
+    local commands; commands=(
+'set:Configure the cloud system to use' \
+'upload:Upload your local backups to the cloud, overwriting any existing cloud backups' \
+'download:Download your cloud backups, overwriting any existing local backups' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi cloud commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__download_commands] )) ||
+_ludusavi__cloud__download_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud download commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help_commands] )) ||
+_ludusavi__cloud__help_commands() {
+    local commands; commands=(
+'set:Configure the cloud system to use' \
+'upload:Upload your local backups to the cloud, overwriting any existing cloud backups' \
+'download:Download your cloud backups, overwriting any existing local backups' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi cloud help commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__download_commands] )) ||
+_ludusavi__cloud__help__download_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help download commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__help_commands] )) ||
+_ludusavi__cloud__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help help commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__set_commands] )) ||
+_ludusavi__cloud__help__set_commands() {
+    local commands; commands=(
+'none:Disable cloud backups' \
+'custom:Use a pre-existing Rclone remote' \
+'box:Use Box' \
+'dropbox:Use Dropbox' \
+'google-drive:Use Google Drive' \
+'onedrive:Use OneDrive' \
+'ftp:Use an FTP server' \
+'smb:Use an SMB server' \
+'webdav:Use a WebDAV server' \
+    )
+    _describe -t commands 'ludusavi cloud help set commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__set__box_commands] )) ||
+_ludusavi__cloud__help__set__box_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help set box commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__set__custom_commands] )) ||
+_ludusavi__cloud__help__set__custom_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help set custom commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__set__dropbox_commands] )) ||
+_ludusavi__cloud__help__set__dropbox_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help set dropbox commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__set__ftp_commands] )) ||
+_ludusavi__cloud__help__set__ftp_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help set ftp commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__set__google-drive_commands] )) ||
+_ludusavi__cloud__help__set__google-drive_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help set google-drive commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__set__none_commands] )) ||
+_ludusavi__cloud__help__set__none_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help set none commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__set__onedrive_commands] )) ||
+_ludusavi__cloud__help__set__onedrive_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help set onedrive commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__set__smb_commands] )) ||
+_ludusavi__cloud__help__set__smb_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help set smb commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__set__webdav_commands] )) ||
+_ludusavi__cloud__help__set__webdav_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help set webdav commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__help__upload_commands] )) ||
+_ludusavi__cloud__help__upload_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud help upload commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set_commands] )) ||
+_ludusavi__cloud__set_commands() {
+    local commands; commands=(
+'none:Disable cloud backups' \
+'custom:Use a pre-existing Rclone remote' \
+'box:Use Box' \
+'dropbox:Use Dropbox' \
+'google-drive:Use Google Drive' \
+'onedrive:Use OneDrive' \
+'ftp:Use an FTP server' \
+'smb:Use an SMB server' \
+'webdav:Use a WebDAV server' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi cloud set commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__box_commands] )) ||
+_ludusavi__cloud__set__box_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set box commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__custom_commands] )) ||
+_ludusavi__cloud__set__custom_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set custom commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__dropbox_commands] )) ||
+_ludusavi__cloud__set__dropbox_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set dropbox commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__ftp_commands] )) ||
+_ludusavi__cloud__set__ftp_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set ftp commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__google-drive_commands] )) ||
+_ludusavi__cloud__set__google-drive_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set google-drive commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__help_commands] )) ||
+_ludusavi__cloud__set__help_commands() {
+    local commands; commands=(
+'none:Disable cloud backups' \
+'custom:Use a pre-existing Rclone remote' \
+'box:Use Box' \
+'dropbox:Use Dropbox' \
+'google-drive:Use Google Drive' \
+'onedrive:Use OneDrive' \
+'ftp:Use an FTP server' \
+'smb:Use an SMB server' \
+'webdav:Use a WebDAV server' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi cloud set help commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__help__box_commands] )) ||
+_ludusavi__cloud__set__help__box_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set help box commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__help__custom_commands] )) ||
+_ludusavi__cloud__set__help__custom_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set help custom commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__help__dropbox_commands] )) ||
+_ludusavi__cloud__set__help__dropbox_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set help dropbox commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__help__ftp_commands] )) ||
+_ludusavi__cloud__set__help__ftp_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set help ftp commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__help__google-drive_commands] )) ||
+_ludusavi__cloud__set__help__google-drive_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set help google-drive commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__help__help_commands] )) ||
+_ludusavi__cloud__set__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set help help commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__help__none_commands] )) ||
+_ludusavi__cloud__set__help__none_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set help none commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__help__onedrive_commands] )) ||
+_ludusavi__cloud__set__help__onedrive_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set help onedrive commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__help__smb_commands] )) ||
+_ludusavi__cloud__set__help__smb_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set help smb commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__help__webdav_commands] )) ||
+_ludusavi__cloud__set__help__webdav_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set help webdav commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__none_commands] )) ||
+_ludusavi__cloud__set__none_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set none commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__onedrive_commands] )) ||
+_ludusavi__cloud__set__onedrive_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set onedrive commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__smb_commands] )) ||
+_ludusavi__cloud__set__smb_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set smb commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__set__webdav_commands] )) ||
+_ludusavi__cloud__set__webdav_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud set webdav commands' commands "$@"
+}
+(( $+functions[_ludusavi__cloud__upload_commands] )) ||
+_ludusavi__cloud__upload_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi cloud upload commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete_commands] )) ||
+_ludusavi__complete_commands() {
+    local commands; commands=(
+'bash:Completions for Bash' \
+'fish:Completions for Fish' \
+'zsh:Completions for Zsh' \
+'powershell:Completions for PowerShell' \
+'elvish:Completions for Elvish' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi complete commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__bash_commands] )) ||
+_ludusavi__complete__bash_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi complete bash commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__elvish_commands] )) ||
+_ludusavi__complete__elvish_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi complete elvish commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__fish_commands] )) ||
+_ludusavi__complete__fish_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi complete fish commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__help_commands] )) ||
+_ludusavi__complete__help_commands() {
+    local commands; commands=(
+'bash:Completions for Bash' \
+'fish:Completions for Fish' \
+'zsh:Completions for Zsh' \
+'powershell:Completions for PowerShell' \
+'elvish:Completions for Elvish' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi complete help commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__help__bash_commands] )) ||
+_ludusavi__complete__help__bash_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi complete help bash commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__help__elvish_commands] )) ||
+_ludusavi__complete__help__elvish_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi complete help elvish commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__help__fish_commands] )) ||
+_ludusavi__complete__help__fish_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi complete help fish commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__help__help_commands] )) ||
+_ludusavi__complete__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi complete help help commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__help__powershell_commands] )) ||
+_ludusavi__complete__help__powershell_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi complete help powershell commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__help__zsh_commands] )) ||
+_ludusavi__complete__help__zsh_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi complete help zsh commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__powershell_commands] )) ||
+_ludusavi__complete__powershell_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi complete powershell commands' commands "$@"
+}
+(( $+functions[_ludusavi__complete__zsh_commands] )) ||
+_ludusavi__complete__zsh_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi complete zsh commands' commands "$@"
+}
+(( $+functions[_ludusavi__config_commands] )) ||
+_ludusavi__config_commands() {
+    local commands; commands=(
+'show:Print the active configuration' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi config commands' commands "$@"
+}
+(( $+functions[_ludusavi__config__help_commands] )) ||
+_ludusavi__config__help_commands() {
+    local commands; commands=(
+'show:Print the active configuration' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi config help commands' commands "$@"
+}
+(( $+functions[_ludusavi__config__help__help_commands] )) ||
+_ludusavi__config__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi config help help commands' commands "$@"
+}
+(( $+functions[_ludusavi__config__help__show_commands] )) ||
+_ludusavi__config__help__show_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi config help show commands' commands "$@"
+}
+(( $+functions[_ludusavi__config__show_commands] )) ||
+_ludusavi__config__show_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi config show commands' commands "$@"
+}
+(( $+functions[_ludusavi__find_commands] )) ||
+_ludusavi__find_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi find commands' commands "$@"
+}
+(( $+functions[_ludusavi__help_commands] )) ||
+_ludusavi__help_commands() {
+    local commands; commands=(
+'backup:Back up data' \
+'restore:Restore data' \
+'complete:Generate shell completion scripts' \
+'backups:Show backups' \
+'find:Find game titles' \
+'manifest:Options for Ludusavi'\''s data set' \
+'config:Options for Ludusavi'\''s configuration' \
+'cloud:Cloud sync' \
+'wrap:Wrap restore/backup around game execution' \
+'api:Execute bulk requests using JSON input' \
+'schema:Display schemas that Ludusavi uses' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi help commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__api_commands] )) ||
+_ludusavi__help__api_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help api commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__backup_commands] )) ||
+_ludusavi__help__backup_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help backup commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__backups_commands] )) ||
+_ludusavi__help__backups_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help backups commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud_commands] )) ||
+_ludusavi__help__cloud_commands() {
+    local commands; commands=(
+'set:Configure the cloud system to use' \
+'upload:Upload your local backups to the cloud, overwriting any existing cloud backups' \
+'download:Download your cloud backups, overwriting any existing local backups' \
+    )
+    _describe -t commands 'ludusavi help cloud commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__download_commands] )) ||
+_ludusavi__help__cloud__download_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help cloud download commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__set_commands] )) ||
+_ludusavi__help__cloud__set_commands() {
+    local commands; commands=(
+'none:Disable cloud backups' \
+'custom:Use a pre-existing Rclone remote' \
+'box:Use Box' \
+'dropbox:Use Dropbox' \
+'google-drive:Use Google Drive' \
+'onedrive:Use OneDrive' \
+'ftp:Use an FTP server' \
+'smb:Use an SMB server' \
+'webdav:Use a WebDAV server' \
+    )
+    _describe -t commands 'ludusavi help cloud set commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__set__box_commands] )) ||
+_ludusavi__help__cloud__set__box_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help cloud set box commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__set__custom_commands] )) ||
+_ludusavi__help__cloud__set__custom_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help cloud set custom commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__set__dropbox_commands] )) ||
+_ludusavi__help__cloud__set__dropbox_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help cloud set dropbox commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__set__ftp_commands] )) ||
+_ludusavi__help__cloud__set__ftp_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help cloud set ftp commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__set__google-drive_commands] )) ||
+_ludusavi__help__cloud__set__google-drive_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help cloud set google-drive commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__set__none_commands] )) ||
+_ludusavi__help__cloud__set__none_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help cloud set none commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__set__onedrive_commands] )) ||
+_ludusavi__help__cloud__set__onedrive_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help cloud set onedrive commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__set__smb_commands] )) ||
+_ludusavi__help__cloud__set__smb_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help cloud set smb commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__set__webdav_commands] )) ||
+_ludusavi__help__cloud__set__webdav_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help cloud set webdav commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__cloud__upload_commands] )) ||
+_ludusavi__help__cloud__upload_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help cloud upload commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__complete_commands] )) ||
+_ludusavi__help__complete_commands() {
+    local commands; commands=(
+'bash:Completions for Bash' \
+'fish:Completions for Fish' \
+'zsh:Completions for Zsh' \
+'powershell:Completions for PowerShell' \
+'elvish:Completions for Elvish' \
+    )
+    _describe -t commands 'ludusavi help complete commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__complete__bash_commands] )) ||
+_ludusavi__help__complete__bash_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help complete bash commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__complete__elvish_commands] )) ||
+_ludusavi__help__complete__elvish_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help complete elvish commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__complete__fish_commands] )) ||
+_ludusavi__help__complete__fish_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help complete fish commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__complete__powershell_commands] )) ||
+_ludusavi__help__complete__powershell_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help complete powershell commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__complete__zsh_commands] )) ||
+_ludusavi__help__complete__zsh_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help complete zsh commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__config_commands] )) ||
+_ludusavi__help__config_commands() {
+    local commands; commands=(
+'show:Print the active configuration' \
+    )
+    _describe -t commands 'ludusavi help config commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__config__show_commands] )) ||
+_ludusavi__help__config__show_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help config show commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__find_commands] )) ||
+_ludusavi__help__find_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help find commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__help_commands] )) ||
+_ludusavi__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help help commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__manifest_commands] )) ||
+_ludusavi__help__manifest_commands() {
+    local commands; commands=(
+'show:Print the content of the manifest, including any custom entries' \
+'update:Check for any manifest updates and download if available. By default, does nothing if the most recent check was within the last 24 hours' \
+    )
+    _describe -t commands 'ludusavi help manifest commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__manifest__show_commands] )) ||
+_ludusavi__help__manifest__show_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help manifest show commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__manifest__update_commands] )) ||
+_ludusavi__help__manifest__update_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help manifest update commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__restore_commands] )) ||
+_ludusavi__help__restore_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help restore commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__schema_commands] )) ||
+_ludusavi__help__schema_commands() {
+    local commands; commands=(
+'api-input:Schema for \`api\` command input' \
+'api-output:Schema for \`api\` command output' \
+'config:Schema for config.yaml' \
+'general-output:Schema for general command output in --api mode (\`backup\`, \`restore\`, \`backups\`, \`find\`, \`cloud upload\`, \`cloud download\`)' \
+    )
+    _describe -t commands 'ludusavi help schema commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__schema__api-input_commands] )) ||
+_ludusavi__help__schema__api-input_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help schema api-input commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__schema__api-output_commands] )) ||
+_ludusavi__help__schema__api-output_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help schema api-output commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__schema__config_commands] )) ||
+_ludusavi__help__schema__config_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help schema config commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__schema__general-output_commands] )) ||
+_ludusavi__help__schema__general-output_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help schema general-output commands' commands "$@"
+}
+(( $+functions[_ludusavi__help__wrap_commands] )) ||
+_ludusavi__help__wrap_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi help wrap commands' commands "$@"
+}
+(( $+functions[_ludusavi__manifest_commands] )) ||
+_ludusavi__manifest_commands() {
+    local commands; commands=(
+'show:Print the content of the manifest, including any custom entries' \
+'update:Check for any manifest updates and download if available. By default, does nothing if the most recent check was within the last 24 hours' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi manifest commands' commands "$@"
+}
+(( $+functions[_ludusavi__manifest__help_commands] )) ||
+_ludusavi__manifest__help_commands() {
+    local commands; commands=(
+'show:Print the content of the manifest, including any custom entries' \
+'update:Check for any manifest updates and download if available. By default, does nothing if the most recent check was within the last 24 hours' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi manifest help commands' commands "$@"
+}
+(( $+functions[_ludusavi__manifest__help__help_commands] )) ||
+_ludusavi__manifest__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi manifest help help commands' commands "$@"
+}
+(( $+functions[_ludusavi__manifest__help__show_commands] )) ||
+_ludusavi__manifest__help__show_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi manifest help show commands' commands "$@"
+}
+(( $+functions[_ludusavi__manifest__help__update_commands] )) ||
+_ludusavi__manifest__help__update_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi manifest help update commands' commands "$@"
+}
+(( $+functions[_ludusavi__manifest__show_commands] )) ||
+_ludusavi__manifest__show_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi manifest show commands' commands "$@"
+}
+(( $+functions[_ludusavi__manifest__update_commands] )) ||
+_ludusavi__manifest__update_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi manifest update commands' commands "$@"
+}
+(( $+functions[_ludusavi__restore_commands] )) ||
+_ludusavi__restore_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi restore commands' commands "$@"
+}
+(( $+functions[_ludusavi__schema_commands] )) ||
+_ludusavi__schema_commands() {
+    local commands; commands=(
+'api-input:Schema for \`api\` command input' \
+'api-output:Schema for \`api\` command output' \
+'config:Schema for config.yaml' \
+'general-output:Schema for general command output in --api mode (\`backup\`, \`restore\`, \`backups\`, \`find\`, \`cloud upload\`, \`cloud download\`)' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi schema commands' commands "$@"
+}
+(( $+functions[_ludusavi__schema__api-input_commands] )) ||
+_ludusavi__schema__api-input_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi schema api-input commands' commands "$@"
+}
+(( $+functions[_ludusavi__schema__api-output_commands] )) ||
+_ludusavi__schema__api-output_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi schema api-output commands' commands "$@"
+}
+(( $+functions[_ludusavi__schema__config_commands] )) ||
+_ludusavi__schema__config_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi schema config commands' commands "$@"
+}
+(( $+functions[_ludusavi__schema__general-output_commands] )) ||
+_ludusavi__schema__general-output_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi schema general-output commands' commands "$@"
+}
+(( $+functions[_ludusavi__schema__help_commands] )) ||
+_ludusavi__schema__help_commands() {
+    local commands; commands=(
+'api-input:Schema for \`api\` command input' \
+'api-output:Schema for \`api\` command output' \
+'config:Schema for config.yaml' \
+'general-output:Schema for general command output in --api mode (\`backup\`, \`restore\`, \`backups\`, \`find\`, \`cloud upload\`, \`cloud download\`)' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'ludusavi schema help commands' commands "$@"
+}
+(( $+functions[_ludusavi__schema__help__api-input_commands] )) ||
+_ludusavi__schema__help__api-input_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi schema help api-input commands' commands "$@"
+}
+(( $+functions[_ludusavi__schema__help__api-output_commands] )) ||
+_ludusavi__schema__help__api-output_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi schema help api-output commands' commands "$@"
+}
+(( $+functions[_ludusavi__schema__help__config_commands] )) ||
+_ludusavi__schema__help__config_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi schema help config commands' commands "$@"
+}
+(( $+functions[_ludusavi__schema__help__general-output_commands] )) ||
+_ludusavi__schema__help__general-output_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi schema help general-output commands' commands "$@"
+}
+(( $+functions[_ludusavi__schema__help__help_commands] )) ||
+_ludusavi__schema__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi schema help help commands' commands "$@"
+}
+(( $+functions[_ludusavi__wrap_commands] )) ||
+_ludusavi__wrap_commands() {
+    local commands; commands=()
+    _describe -t commands 'ludusavi wrap commands' commands "$@"
+}
+
+if [ "$funcstack[1]" = "_ludusavi" ]; then
+    _ludusavi "$@"
+else
+    compdef _ludusavi ludusavi
+fi

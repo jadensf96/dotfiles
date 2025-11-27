@@ -8,12 +8,12 @@ setopt SHARE_HISTORY
 HISTFILE=~/.zhistory
 setopt appendhistory
 # cat /home/fish/.cache/wallust/sequences
-# cat ~/.cache/wal/sequences
-# cat ~/.cache/wal/sequences
-# source ~/.cache/wal/colors-tty.sh
+#
+(cat ~/.cache/wal/sequences &)
+ source ~/.cache/wal/colors-tty.sh
 
 ### Add zsh-users/zsh-completions directory to zsh's PATH ###########
-fpath=(path/to/zsh-completions/src $fpath)
+fpath=(/home/fish/.zsh/completions $fpath)
 
 
 #for deer inline file browser
@@ -40,6 +40,7 @@ export p9="100.72.244.99"
 export P9SERIAL="55291JEBF08931"
 export BROWSER="/usr/bin/qutebrowser"
 ### Aliases #############################################
+alias sctl="sudo systemctl"
 alias ddg="ddgr --url-handler=w3m --rev"
 alias wiki="wiki-tui"
 # alias tether="nmcli connection up Jaden\'s\ S21\ FE\ Network"

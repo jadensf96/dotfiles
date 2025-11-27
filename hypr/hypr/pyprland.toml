@@ -1,10 +1,10 @@
 [pyprland]
 plugins = [ "scratchpads", "toggle_special"]
 
-[scratchpads.wiki]
+[scratchpads.drop]
 animation = "fromBottom"
-command = "alacritty --class nvimwiki -e nvim ~/wiki/index.md"
-class = "nvimwiki"
+command = "kitty --class dropterm"
+class = "dropterm"
 size = "75% 45%"
 
 [scratchpads.gemini]
@@ -14,3 +14,15 @@ class = "gemini"
 # title =  Gemini - fish
 size = "85% 60%"
 margin = 30
+
+[scratchpads.btop]
+animation = ""
+command = "kitty --class btop -e btop"
+class = "btop"
+size = "75% 75%"
+
+[scratchpads.ranger]
+animation = ""
+command = "kitty --class ranger -e ranger"
+class = "ranger"
+size = "75% 75%"
